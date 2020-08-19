@@ -44,24 +44,19 @@ module.exports = {
   lintOnSave: !IS_PROD,
   productionSourceMap: false, // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   devServer: {
-    port: 9020, // 端口
     open: false, // 启动后打开浏览器
     overlay: {
       //  当出现编译器错误或警告时，在浏览器中显示全屏覆盖层
       warnings: false,
       errors: true
+    },
+    proxy: {
+      //配置跨域
+      '/api': {
+        target: 'http://localhost:56311',
+        changOrigin: true
+      }
     }
-    // proxy: {
-    //   //配置跨域
-    //   '/api': {
-    //       target: "https://test.xxx.com",
-    //       // ws:true,
-    //       changOrigin:true,
-    //       pathRewrite:{
-    //           '^/api':'/'
-    //       }
-    //   }
-    // }
   },
   css: {
     extract: IS_PROD, //是否将组件中的 CSS 提取至一个独立的 CSS 文件中 (而不是动态注入到 JavaScript 中的 inline 代码)。
@@ -78,16 +73,15 @@ module.exports = {
       }
     }
   },
-  configureWebpack: config => {
-    config.name = name
-
-    // 为生产环境修改配置...
-    // if (IS_PROD) {
-    //   // externals
-    //   config.externals = externals
-    // }
+  configureWebpack: {
+    name: name,
+    resolve: {
+      alias: {
+        '@': resolve('src')
+      }
+    },
+    devtool: 'source-map'
   },
-
   chainWebpack: config => {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test

@@ -19,9 +19,11 @@ import '@/assets/css/index.scss'
 // 移动端适配
 import 'lib-flexible/flexible.js'
 
-// filters
-import './filters'
 Vue.config.productionTip = false
+
+// axios包装
+import axiosAPI from '@/utils/axios'
+Vue.use(axiosAPI) // axios包装
 
 new Vue({
   el: '#app',
