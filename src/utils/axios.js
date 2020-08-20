@@ -7,11 +7,11 @@ import { Toast } from 'vant'
 axios.interceptors.request.use(
   config => {
     // 不传递默认开启loading
-    if (!config.hideloading) {
-      Toast.loading({
-        forbidClick: true
-      })
-    }
+    // if (!config.hideloading) {
+    //   Toast.loading({
+    //     forbidClick: true
+    //   })
+    // }
     return config
   },
   error => {
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
   }
 )
 
-const baseUrl = 'SchoolAc/api'
+const baseUrl = 'SchoolHR/api'
 // 封装axios
 function apiAxios(method, url, params, data) {
   const httpDefault = {

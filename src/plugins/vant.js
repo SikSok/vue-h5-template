@@ -14,7 +14,10 @@ import {
   Form,
   field,
   RadioGroup,
-  Radio
+  Radio,
+  Collapse,
+  CollapseItem,
+  icon
 } from 'vant'
 Vue.use(Button)
 Vue.use(Cell)
@@ -29,3 +32,6 @@ Vue.use(Form)
 Vue.use(field)
 Vue.use(Radio)
 Vue.use(RadioGroup)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
+Vue.use(icon)

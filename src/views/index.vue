@@ -5,12 +5,19 @@
     <div class="headerBox">
       <img class="headerPic" src="@/assets/headPic.png" />
       <div class="head-content">
-        <h3>黄新德</h3>
-        <p><span>研发部-研发1组</span><br /><span>在北京长青云信息技术有限公司工作了768天</span></p>
+        <h3>{{ staffInfo.Name }}</h3>
+        <p>
+          <span>{{ staffInfo.JobTitle }}</span
+          ><br /><span>已在本校任职了{{ staffInfo.JoinDays }}天</span>
+        </p>
       </div>
     </div>
     <van-cell-group title="人事档案">
-      <van-cell title="基本信息" is-link icon="user-o" to="basicInformation" />
+      <van-collapse v-model="activeName" accordion>
+        <van-collapse-item title="基本信息" name="1" icon="user-o">
+          <basic-info :formData="basicInfo" />
+        </van-collapse-item>
+      </van-collapse>
       <van-cell title="家庭情况" is-link icon="wap-home-o" to="basicInformation" />
       <van-cell title="教育背景" is-link icon="orders-o" to="basicInformation" />
       <van-cell title="工作经历" is-link icon="orders-o" to="basicInformation" value="未填写" />
@@ -23,14 +30,53 @@
 
 <script>
 import { Toast } from 'vant'
+import basicInfo from './detail/basicInfo'
 export default {
   name: 'Home',
+  components: { basicInfo },
   data() {
-    return {}
+    return {
+      staffId: 1,
+      tenantId: 4,
+      staffInfo: {},
+      activeName: '0',
+      basicInfo: {}, // 基础信息
+      familyInfo: {} // 家庭信息
+    }
+  },
+  mounted() {
+    this.init()
   },
   methods: {
+    // 返回事件
     onClickLeft() {
+      this.$router.go(-1)
       Toast('返回')
+    },
+    // 初始化，查询员工人事档案信息
+    init() {
+      this.getAxios('/Information/{0}'.format(this.tenantId), { staffId: this.staffId }).then(res => {
+        this.staffInfo = res
+      })
+    },
+    // 获取某项基础信息
+    getInfo(infoType, receiveItem) {
+      this.getAxios('/Maintenance/{0}/{1}'.format(this.tenantId, infoType), { staffId: this.staffId }).then(res => {
+        this[receiveItem] = res
+      })
+    }
+  },
+  watch: {
+    // 监控点击详情项 获取最新数据
+    activeName(val) {
+      switch (val) {
+        case '1':
+          this.getInfo('GetBasicInfo', 'basicInfo')
+          break
+        case '2':
+          this.getInfo('GetBasicInfo', 'basicInfo')
+          break
+      }
     }
   }
 }

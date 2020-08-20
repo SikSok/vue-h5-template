@@ -15,7 +15,7 @@ export const constantRouterMap = [
   {
     path: '/basicInformation',
     name: 'basicInformation',
-    component: () => import('@/views/detail/basicInformation'),
+    component: () => import('@/views/edit/basicInformation'),
     meta: {
       title: '基本信息',
       keepAlive: false

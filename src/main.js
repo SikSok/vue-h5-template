@@ -24,6 +24,10 @@ Vue.config.productionTip = false
 // axios包装
 import axiosAPI from '@/utils/axios'
 Vue.use(axiosAPI) // axios包装
+// 引入自定义 字符串format方法
+import '@/utils/format.js'
+// 引入全局过滤器
+import '@/utils/filters.js'
 
 new Vue({
   el: '#app',
