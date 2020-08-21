@@ -1,4 +1,9 @@
 const state = {
+  // 测试数据
+  tenantId: 4,
+  staffId: 1,
+  userId: 0,
+  // 全局数据
   activeName: 0
 }
 const mutations = {
@@ -8,6 +13,15 @@ const mutations = {
 }
 
 const actions = {
+  setTenantId({ commit }, data) {
+    state.tenantId = data
+  },
+  setStaffId({ commit }, data) {
+    state.staffId = data
+  },
+  setUserId({ commit }, data) {
+    state.userId = data
+  },
   setActiveName({ commit }, data) {
     commit('SET_ACTIVE_NAME', data)
   }

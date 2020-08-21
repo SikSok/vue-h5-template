@@ -9,9 +9,8 @@ import router from './router'
 import store from './store'
 
 // 设置 js中可以访问 $cdn
-import { $cdn, tenantId } from '@/config'
+import { $cdn } from '@/config'
 Vue.prototype.$cdn = $cdn
-Vue.prototype.$tenantId = tenantId
 
 // 全局引入按需引入UI库 vant
 import '@/plugins/vant'

@@ -5,7 +5,7 @@
     <div class="headerBox">
       <img class="headerPic" src="@/assets/headPic.png" />
       <div class="head-content">
-        <h3>{{ staffInfo.Name }}</h3>
+        <h3>{{ staffInfo.Name }}<set-test @initPage="UseTestSettinh" /></h3>
         <p>
           <span>{{ staffInfo.JobTitle }}</span
           ><br /><span>已在本校任职了{{ staffInfo.JoinDays }}天</span>
@@ -21,8 +21,6 @@
           <family-info :familyData="familyData" />
         </van-collapse-item>
       </van-collapse>
-
-      <van-cell title="家庭情况" is-link icon="wap-home-o" to="basicInformation" />
       <van-cell title="教育背景" is-link icon="orders-o" to="basicInformation" />
       <van-cell title="工作经历" is-link icon="orders-o" to="basicInformation" value="未填写" />
       <van-cell title="资质认证" is-link icon="orders-o" to="basicInformation" value="未填写" />
@@ -33,27 +31,36 @@
 </template>
 
 <script>
+import setTest from '@/components/setTestData'
 import { Toast } from 'vant'
 import basicInfo from './detail/basicInfo'
 import familyInfo from './detail/familyInfo'
 export default {
   name: 'Home',
-  components: { basicInfo, familyInfo },
+  components: { basicInfo, familyInfo, setTest },
   data() {
     return {
-      staffId: 1,
-      tenantId: 4,
+      staffId: 0,
+      tenantId: 0,
       staffInfo: {},
       activeName: '0',
       basicInfo: {}, // 基础信息
-      familyData: [{ id: 0 }, { id: 1 }] // 家庭信息
+      familyData: [] // 家庭信息
     }
   },
+  // 初始化
   mounted() {
     this.activeName = this.$store.state.app.activeName
-    this.init()
+    // this.init()
+    this.UseTestSettinh()
   },
   methods: {
+    // 使用测试配置数据
+    UseTestSettinh() {
+      this.tenantId = this.$store.state.app.tenantId
+      this.staffId = this.$store.state.app.staffId
+      this.init()
+    },
     // 返回事件
     onClickLeft() {
       this.$router.go(-1)
@@ -83,7 +90,7 @@ export default {
           this.getInfo('GetBasicInfo', 'basicInfo')
           break
         case '2':
-          this.getInfo('GetBasicInfo', 'basicInfo')
+          this.getInfo('GetFamilyInfo', 'familyData')
           break
       }
     }

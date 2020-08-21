@@ -17,7 +17,10 @@ import {
   Radio,
   Collapse,
   CollapseItem,
-  icon
+  icon,
+  Popup,
+  Toast,
+  DatetimePicker
 } from 'vant'
 Vue.use(Button)
 Vue.use(Cell)
@@ -35,3 +38,6 @@ Vue.use(RadioGroup)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(icon)
+Vue.use(Popup)
+Vue.use(Toast)
+Vue.use(DatetimePicker)

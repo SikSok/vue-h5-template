@@ -79,7 +79,7 @@ function apiAxios(method, url, params, data) {
 
         // 封装数据返回失败提示函数
         console.log(message)
-        Toast(message)
+        Toast('服务器错误')
         reject(message)
       })
   })

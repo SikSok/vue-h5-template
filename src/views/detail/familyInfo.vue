@@ -18,9 +18,13 @@
           <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
         </template>
       </van-cell>
-      <van-cell title="关系" :value="'父亲'" size="large" />
-      <van-cell title="姓名" :value="'那把'" />
-      <van-cell title="联系电话" :value="12232221232" />
+      <van-cell title="姓名" :value="item.Contact" />
+      <van-cell title="关系" :value="item.Relationship" />
+      <van-cell title="工作单位" :value="item.Company" />
+      <van-cell title="职位" :value="item.JobTitle" />
+      <van-cell title="联系电话" :value="item.ContactTel" />
+      <van-cell title="邮箱" :value="item.Postcode" />
+      <van-cell title="地址" :value="item.Address" />
     </div>
     <van-cell class="edit-cell" @click="SaveItem()">
       <template #title>
@@ -54,10 +58,12 @@ export default {
     // 跳转至维护界面 功能：新增/更新
     SaveItem(item) {
       var itemId = 0
+      var title = '新增'
       if (item !== undefined) {
         itemId = item.Id
+        title = '编辑'
       }
-      this.$router.push({ name: 'familyEditPage', params: { id: itemId } })
+      this.$router.push({ name: 'familyEditPage', params: { id: itemId, title: title } })
     }
   }
 }
