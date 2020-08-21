@@ -17,7 +17,16 @@ export const constantRouterMap = [
     name: 'basicInformation',
     component: () => import('@/views/edit/basicInformation'),
     meta: {
-      title: '基本信息',
+      title: '编辑-基本信息',
+      keepAlive: false
+    }
+  },
+  {
+    path: '/familyEditPage',
+    name: 'familyEditPage',
+    component: () => import('@/views/edit/familyEditPage'),
+    meta: {
+      title: '编辑-家庭信息',
       keepAlive: false
     }
   }

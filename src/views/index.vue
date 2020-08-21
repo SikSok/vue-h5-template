@@ -17,7 +17,11 @@
         <van-collapse-item title="基本信息" name="1" icon="user-o">
           <basic-info :formData="basicInfo" />
         </van-collapse-item>
+        <van-collapse-item title="家庭情况" :value="staffInfo.HasFamilyInfo | ifHasValue" name="2" icon="wap-home-o">
+          <family-info :familyData="familyData" />
+        </van-collapse-item>
       </van-collapse>
+
       <van-cell title="家庭情况" is-link icon="wap-home-o" to="basicInformation" />
       <van-cell title="教育背景" is-link icon="orders-o" to="basicInformation" />
       <van-cell title="工作经历" is-link icon="orders-o" to="basicInformation" value="未填写" />
@@ -31,9 +35,10 @@
 <script>
 import { Toast } from 'vant'
 import basicInfo from './detail/basicInfo'
+import familyInfo from './detail/familyInfo'
 export default {
   name: 'Home',
-  components: { basicInfo },
+  components: { basicInfo, familyInfo },
   data() {
     return {
       staffId: 1,
@@ -41,10 +46,11 @@ export default {
       staffInfo: {},
       activeName: '0',
       basicInfo: {}, // 基础信息
-      familyInfo: {} // 家庭信息
+      familyData: [{ id: 0 }, { id: 1 }] // 家庭信息
     }
   },
   mounted() {
+    this.activeName = this.$store.state.app.activeName
     this.init()
   },
   methods: {
@@ -69,6 +75,9 @@ export default {
   watch: {
     // 监控点击详情项 获取最新数据
     activeName(val) {
+      if (val > 0) {
+        this.$store.dispatch('app/setActiveName', val)
+      }
       switch (val) {
         case '1':
           this.getInfo('GetBasicInfo', 'basicInfo')

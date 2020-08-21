@@ -11,3 +11,37 @@ body .app {
 .app-container {
   padding-bottom: 50px;
 }
+
+.edit-page {
+  background-color: #ffffff;
+  height: 100vh;
+  .van-cell-group__title {
+    background-color: #f8f8f8;
+  }
+}
+
+.edit-cell {
+  text-align: center;
+  padding: 5px 0px;
+  border-radius: 5px;
+  color: #969799;
+  background: #f8f8f8;
+}
+
+.data-none-cell {
+  text-align: center;
+  border-radius: 5px;
+  color: #969799;
+}
+
+.info-item {
+  border-bottom: #f8f8f8 solid 5px;
+}
+
+.cellItem-title {
+  padding: 0.21333rem 0.21333rem 0.21333rem;
+  color: #969799;
+  font-size: 0.37333rem;
+  line-height: 0.42667rem;
+  background-color: #f8f8f8;
+}

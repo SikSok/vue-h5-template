@@ -1,18 +1,20 @@
 const state = {
-  userName: ''
+  activeName: 0
 }
 const mutations = {
-  SET_USER_NAME(state, name) {
-    state.userName = name
+  SET_ACTIVE_NAME: (state, data) => {
+    state.activeName = data
   }
 }
+
 const actions = {
-  // 设置name
-  setUserName({ commit }, name) {
-    commit('SET_USER_NAME', name)
+  setActiveName({ commit }, data) {
+    commit('SET_ACTIVE_NAME', data)
   }
 }
+
 export default {
+  namespaced: true,
   state,
   mutations,
   actions

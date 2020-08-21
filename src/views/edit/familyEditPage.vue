@@ -1,7 +1,7 @@
 <!-- 个人档案首页 -->
 <template>
   <div class="edit-page">
-    <van-nav-bar title="编辑-基本信息" l left-arrow @click-left="onClickLeft" />
+    <van-nav-bar title="编辑-家庭信息" l left-arrow @click-left="onClickLeft" />
     <van-form @submit="onSubmit">
       <van-field
         v-model="username"
@@ -38,20 +38,24 @@
           </van-radio-group>
         </template>
       </van-field>
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">
-          提交
-        </van-button>
-      </div>
+      <van-cell>
+        <template #title>
+          <van-row type="flex" justify="center">
+            <van-col span="7" style="text-align:center;"> <van-button type="info">提交</van-button></van-col>
+            <van-col span="7" style="text-align:center;"> <van-button type="danger">删除</van-button></van-col>
+          </van-row>
+        </template>
+      </van-cell>
     </van-form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'FamilyEditPage',
   data() {
     return {
+      item: {},
       username: '',
       password: ''
     }
@@ -60,8 +64,22 @@ export default {
     onClickLeft() {
       this.$router.go(-1)
     },
+    // 提交
     onSubmit(values) {
       console.log('submit', values)
+    },
+    // 获取数据
+    getData(id) {
+      this.getAxios('/Maintenance/{0}/GetFamilyDataById'.format(this.$tenantId), { id: id }).then(res => {
+        this.item = res
+      })
+    }
+  },
+  // 进入页面触发初始化事件
+  mounted() {
+    // 如果id>0？ 老数据维护 ： 新建数据
+    if (this.$route.params.id > 0) {
+      this.getData()
     }
   }
 }
