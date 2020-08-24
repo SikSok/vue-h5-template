@@ -7,7 +7,7 @@
     <van-cell title="手机号" :value="item.Mobile | complete" />
     <van-cell title="邮箱" :value="item.EnterpriseEmail | complete" />
     <van-cell title="工号" :value="item.EmployeeNo | complete" />
-    <van-cell title="性别" :value="item.Gender | complete" />
+    <van-cell title="性别" :value="item.Gender | csGender | complete" />
     <van-cell title="生日" :value="item.Birthday | csdate | complete" />
     <van-cell title="入职日期" :value="item.JoinedDate | csdate | complete" />
     <van-cell title="工作地点" :value="item.WorkPlace | complete" />

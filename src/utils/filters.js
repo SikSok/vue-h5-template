@@ -22,6 +22,18 @@ Vue.filter('ifHasValue', function(value) {
   return result
 })
 
+// 时间转换 年-月-日 时-分
+Vue.filter('csGender', function(value) {
+  if (!value) {
+    return ''
+  }
+  if (value === 1) {
+    return '男'
+  } else {
+    return '女'
+  }
+})
+
 // 时间转换 年-月-日
 Vue.filter('csdate', function(value) {
   if (!value) {

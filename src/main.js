@@ -28,6 +28,8 @@ Vue.use(axiosAPI) // axios包装
 import '@/utils/format.js'
 // 引入全局过滤器
 import '@/utils/filters.js'
+// 引入全局事件
+import '@/utils/function.js'
 
 new Vue({
   el: '#app',

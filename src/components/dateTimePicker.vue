@@ -52,11 +52,14 @@ export default {
     showPopup() {
       this.show = true
       this.selectDate = new Date(this.currentDate) // 每次打开，初始化所选时间为当前时间；时间控件无法识别字符串时间数据，要用new Date(*)
+      if (this.currentDate === null) {
+        this.selectDate = new Date()
+      }
     },
     // 确认选择的时间
-    confirmPicker(val) {
-      this.$emit('input', val)
+    confirmPicker() {
       this.currentDate = this.selectDate
+      this.$emit('input', this.selectDate)
       this.show = false
     }
   },
@@ -64,9 +67,7 @@ export default {
     // 初始化获取当前时间值
     value: {
       handler(val) {
-        if (!val) {
-          this.currentDate = new Date()
-        } else {
+        if (val) {
           this.currentDate = new Date(val)
         }
       },

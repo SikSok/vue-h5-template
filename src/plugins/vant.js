@@ -47,6 +47,8 @@ Vue.use(Picker)
 // 全局引用自定义组件
 import DateTimePicker from '@/components/dateTimePicker'
 import WorkplaceSelect from '@/components/WorkPlace'
+import RelationSelect from '@/components/RelationSelect'
 
 Vue.component('DateTimePicker', DateTimePicker)
 Vue.component('WorkplaceSelect', WorkplaceSelect)
+Vue.component('RelationSelect', RelationSelect)

@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- 空数据提示 -->
-    <van-cell class="data-none-cell" v-if="items.length < 1">
+    <van-cell class="data-none-cell" v-if="showNoneWarning">
       <template #title>
         <p>
           <van-icon name="question-o" size="40" /><br />
@@ -42,15 +42,19 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [],
+      showNoneWarning: false
     }
   },
   watch: {
     familyData: {
       handler(val) {
         this.items = val
+        if (this.items.length < 1) {
+          this.showNoneWarning = true
+        }
       },
-      immediate: true
+      immediate: false
     }
   },
   methods: {

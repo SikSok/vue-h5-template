@@ -10,12 +10,7 @@
           placeholder="请填写姓名"
           :rules="[{ required: true, message: '请填写姓名' }]"
         />
-        <van-field
-          v-model="item.Relationship"
-          label="关系"
-          placeholder="与本人关系"
-          :rules="[{ required: true, message: '请选择关系' }]"
-        />
+        <relation-select title="与本人关系" v-model="item.Relationship" @input="change" />
         <van-field v-model="item.Company" label="工作单位" placeholder="请填写工作单位" />
         <van-field v-model="item.JobTitle" label="职位" placeholder="请填写职位" />
         <van-field
@@ -23,7 +18,10 @@
           type="tel"
           label="联系电话"
           placeholder="请填写联系电话"
-          :rules="[{ required: true, message: '请填写联系电话' }]"
+          :rules="[
+            { required: true, message: '请填写联系电话' },
+            { pattern: /^1[3456789]\d{9}$/, message: '号码格式错误！' }
+          ]"
         />
         <van-field v-model="item.Postcode" type="tel" label="邮箱" placeholder="请填写邮箱" />
         <van-field v-model="item.Address" type="tel" label="地址" placeholder="请填写地址" />
@@ -68,6 +66,9 @@ export default {
       this.getAxios('/WpRelation/{0}'.format(this.tenantId), { id: id }).then(res => {
         this.item = res
       })
+    },
+    change() {
+      this.$forceUpdate()
     }
   },
   // 进入页面触发初始化事件

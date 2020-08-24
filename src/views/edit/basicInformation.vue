@@ -35,7 +35,7 @@
         </van-field>
         <date-time-picker v-model="item.Birthday" title="生日" @input="change" />
         <date-time-picker v-model="item.JoinedDate" title="入职日期" @input="change" />
-        <workplace-select v-model="item.WorkPlaceId" />
+        <workplace-select v-model="item.WorkPlaceId" @input="change" />
         <div style="margin: 16px;">
           <van-button round block type="info" native-type="submit">
             提交
