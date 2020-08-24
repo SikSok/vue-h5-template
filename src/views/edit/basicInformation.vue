@@ -17,22 +17,25 @@
           v-model="item.Mobile"
           type="tel"
           label="手机号"
-          placeholder="请填写手机号"
-          :rules="[{ required: true, message: '请填写手机号' }]"
+          placeholder="手机号"
+          :rules="[
+            { required: true, message: '请填写手机号' },
+            { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！' }
+          ]"
         />
         <van-field v-model="item.EnterpriseEmail" type="tel" label="邮箱" placeholder="请填写邮箱" />
         <van-field v-model="item.EmployeeNo" type="number" label="工号" placeholder="请填写工号" />
         <van-field name="radio" label="性别">
           <template #input>
             <van-radio-group v-model="item.Gender" direction="horizontal">
-              <van-radio name="1">男</van-radio>
-              <van-radio name="2">女</van-radio>
+              <van-radio :name="1">男</van-radio>
+              <van-radio :name="2">女</van-radio>
             </van-radio-group>
           </template>
         </van-field>
-        <van-field v-model="item.Birthday" label="生日" placeholder="请选择生日（需包装时间组件）" />
-        <van-field v-model="item.JoinedDate" label="入职日期" placeholder="请选择入职日期（需包装时间组件）" />
-        <van-field v-model="item.WorkPlaceId" label="工作地点" placeholder="请选择工作地点（需包装组件）" />
+        <date-time-picker v-model="item.Birthday" title="生日" @input="change" />
+        <date-time-picker v-model="item.JoinedDate" title="入职日期" @input="change" />
+        <workplace-select v-model="item.WorkPlaceId" />
         <div style="margin: 16px;">
           <van-button round block type="info" native-type="submit">
             提交
@@ -44,7 +47,6 @@
 </template>
 
 <script>
-import { Toast } from 'vant'
 export default {
   name: 'Home',
   data() {
@@ -61,9 +63,15 @@ export default {
     },
     // 提交更新
     onSubmit() {
-      console.log(this.item)
-      Toast('提交')
+      var tenantId = this.$store.state.app.tenantId
+      this.putAxios('/WpTenantStaff/{0}'.format(tenantId), {}, this.item).then(res => {
+        this.item = res
+        this.$router.go(-1)
+      })
       this.$router.go(-1)
+    },
+    change() {
+      this.$forceUpdate()
     }
   },
   // 获取员工基本信息数据

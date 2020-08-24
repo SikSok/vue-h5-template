@@ -20,7 +20,8 @@ import {
   icon,
   Popup,
   Toast,
-  DatetimePicker
+  DatetimePicker,
+  Picker
 } from 'vant'
 Vue.use(Button)
 Vue.use(Cell)
@@ -41,3 +42,11 @@ Vue.use(icon)
 Vue.use(Popup)
 Vue.use(Toast)
 Vue.use(DatetimePicker)
+Vue.use(Picker)
+
+// 全局引用自定义组件
+import DateTimePicker from '@/components/dateTimePicker'
+import WorkplaceSelect from '@/components/WorkPlace'
+
+Vue.component('DateTimePicker', DateTimePicker)
+Vue.component('WorkplaceSelect', WorkplaceSelect)
