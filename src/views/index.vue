@@ -2,16 +2,23 @@
 <template>
   <div>
     <van-nav-bar title="个人档案" left-arrow @click-left="onClickLeft" />
-    <div class="headerBox">
-      <img class="headerPic" src="@/assets/headPic.png" />
-      <div class="head-content">
-        <h3>{{ staffInfo.Name }}<set-test @initPage="UseTestSettinh" /></h3>
-        <p>
-          <span>{{ staffInfo.JobTitle }}</span
-          ><br /><span>已在本校任职了{{ staffInfo.JoinDays }}天</span>
-        </p>
-      </div>
-    </div>
+    <van-cell class="header-row">
+      <template>
+        <van-skeleton title avatar avatar-size="45px" :row="1" :loading="loading">
+          <div class="headerBox">
+            <img class="headerPic" src="@/assets/headPic.png" />
+            <div>
+              <h3>{{ staffInfo.Name }}<set-test @initPage="UseTestSettinh" /></h3>
+              <p>
+                <span>{{ staffInfo.JobTitle }}</span
+                ><br /><span>已在本校任职了{{ staffInfo.JoinDays }}天</span>
+              </p>
+            </div>
+          </div>
+        </van-skeleton>
+      </template>
+    </van-cell>
+
     <van-cell-group title="人事档案">
       <van-collapse v-model="activeName" accordion>
         <van-collapse-item title="基本信息" name="1" icon="user-o">
@@ -56,6 +63,7 @@ export default {
   components: { basicInfo, familyInfo, setTest, educationInfo, workHistory, qualification },
   data() {
     return {
+      loading: true,
       staffId: 0,
       tenantId: 0,
       staffInfo: {},
@@ -89,6 +97,7 @@ export default {
     init() {
       this.getAxios('/Information/{0}'.format(this.tenantId), { staffId: this.staffId }).then(res => {
         this.staffInfo = res
+        this.loading = false
       })
     },
     // 获取某项基础信息
@@ -125,20 +134,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.headerBox {
-  display: flex;
-  padding: 0 16px;
-  background: #ffffff;
-  margin-top: 1px;
-}
-.headerPic {
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  margin: 16px 16px 0px 0px;
-}
-.head-content {
-  padding-top: 6px;
-}
-</style>

@@ -1,34 +1,36 @@
 <!-- 工作经历详情块 -->
 <template>
   <div>
-    <!-- 空数据提示 -->
-    <van-cell class="data-none-cell" v-if="showNoneWarning">
-      <template #title>
-        <p>
-          <van-icon name="question-o" size="40" /><br />
-          <span class="custom-title">暂无数据</span>
-        </p>
-      </template>
-    </van-cell>
-    <!-- 数据内容 -->
-    <div v-for="(item, index) in items" :key="index" class="info-item">
-      <van-cell class="cellItem-title">
+    <van-skeleton title :row="11" :loading="loading">
+      <!-- 空数据提示 -->
+      <van-cell class="data-none-cell" v-if="showNoneWarning">
         <template #title>
-          <span>工作经历 {{ index + 1 }}</span>
-          <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
+          <p>
+            <van-icon name="question-o" size="40" /><br />
+            <span class="custom-title">暂无数据</span>
+          </p>
         </template>
       </van-cell>
-      <van-cell title="公司名称" :value="item.Empolyer | complete" />
-      <van-cell title="担任职位" :value="item.Title | complete" />
-      <van-cell title="入职日期" :value="item.StartDate | csdate | complete" />
-      <van-cell title="离职日期" :value="item.EndDate | csdate | complete" />
-      <van-cell title="职位描述" :value="item.Description | complete" />
-    </div>
-    <van-cell class="edit-cell" @click="SaveItem()">
-      <template #title>
-        <span class="custom-title"><van-icon name="plus" size="15" />&nbsp;&nbsp;新增</span>
-      </template>
-    </van-cell>
+      <!-- 数据内容 -->
+      <div v-for="(item, index) in items" :key="index" class="info-item">
+        <van-cell class="cellItem-title">
+          <template #title>
+            <span>工作经历 {{ index + 1 }}</span>
+            <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
+          </template>
+        </van-cell>
+        <van-cell title="公司名称" :value="item.Empolyer | complete" />
+        <van-cell title="担任职位" :value="item.Title | complete" />
+        <van-cell title="入职日期" :value="item.StartDate | csdate | complete" />
+        <van-cell title="离职日期" :value="item.EndDate | csdate | complete" />
+        <van-cell title="职位描述" :value="item.Description | complete" />
+      </div>
+      <van-cell class="edit-cell" @click="SaveItem()">
+        <template #title>
+          <span class="custom-title"><van-icon name="plus" size="15" />&nbsp;&nbsp;新增</span>
+        </template>
+      </van-cell>
+    </van-skeleton>
   </div>
 </template>
 
@@ -40,6 +42,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       items: [],
       showNoneWarning: false
     }
@@ -51,6 +54,7 @@ export default {
         if (this.items.length < 1) {
           this.showNoneWarning = true
         }
+        this.loading = false
       },
       immediate: false
     }
