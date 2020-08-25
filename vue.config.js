@@ -1,11 +1,10 @@
 'use strict'
 const path = require('path')
-const defaultSettings = require('./src/config/index.js')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const resolve = dir => path.join(__dirname, dir)
 // page title
-const name = defaultSettings.title || 'vue mobile template'
+const name = 'vue mobile template'
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 // externals
@@ -68,7 +67,7 @@ module.exports = {
         prependData: `
           @import "assets/css/mixin.scss";
           @import "assets/css/variables.scss";
-          $cdn: "${defaultSettings.$cdn}";
+          $cdn: "https://imgs.solui.cn";
           `
       }
     }
