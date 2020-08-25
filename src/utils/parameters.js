@@ -106,6 +106,15 @@ Parameter.Hr = {
     ]
   },
 
+  RecruitmentType: {
+    Title: '招聘类型',
+    Items: [
+      { Value: 0, Label: '未设置' },
+      { Value: 1, Label: '统招' },
+      { Value: 2, Label: '非统招' }
+    ]
+  },
+
   DegreeType: {
     Title: '学历类型',
     Items: [
@@ -115,6 +124,55 @@ Parameter.Hr = {
       { Value: 4, Label: '自考' },
       { Value: 5, Label: '电大' },
       { Value: 6, Label: '网络教育' }
+    ]
+  },
+  QualificationType: {
+    Title: '证照类型',
+    Items: [
+      {
+        Value: '幼师资格证',
+        Label: '幼师资格证'
+      },
+      {
+        Value: '教师证',
+        Label: '教师证'
+      },
+      {
+        Value: '园长证',
+        Label: '园长证'
+      },
+      {
+        Value: '保育员证',
+        Label: '保育员证'
+      },
+      {
+        Value: '厨师证',
+        Label: '厨师证'
+      },
+      {
+        Value: '会计证',
+        Label: '会计证'
+      },
+      {
+        Value: '签证',
+        Label: '签证'
+      },
+      {
+        Value: '护照',
+        Label: '护照'
+      },
+      {
+        Value: '其他证件',
+        Label: '其他证件'
+      }
+    ]
+  },
+  QualificationLevels: {
+    Title: '证书等级',
+    Items: [
+      { Value: '初级', Label: '初级' },
+      { Value: '中级', Label: '中级' },
+      { Value: '高级', Label: '高级' }
     ]
   },
 

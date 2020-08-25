@@ -11,6 +11,14 @@ Vue.filter('complete', function(value) {
   return value
 })
 
+Vue.filter('trueOrFalse', function(value) {
+  if (value) {
+    return '是'
+  } else {
+    return '否'
+  }
+})
+
 // 根据信息项是否有值，返回对应提示信息
 Vue.filter('ifHasValue', function(value) {
   var result = ''

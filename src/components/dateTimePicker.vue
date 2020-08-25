@@ -7,6 +7,7 @@
       :label="title"
       :value="currentDate | csdate"
       placeholder="请选择时间"
+      :rules="rules"
       @click="showPopup()"
     />
     <van-popup v-model="show" position="bottom">
@@ -37,6 +38,13 @@ export default {
       type: Date,
       default: function() {
         return new Date(1900, 0, 1)
+      }
+    },
+    // 验证规则
+    rules: {
+      type: Array,
+      default: function() {
+        return []
       }
     }
   },

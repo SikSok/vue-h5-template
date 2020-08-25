@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-field readonly clickable label="title" :value="selectItem" placeholder="选择关系" @click="show = true" />
+    <van-field readonly clickable :label="title" :value="selectItem" placeholder="选择关系" @click="show = true" />
     <van-popup v-model="show" position="bottom">
       <van-picker title="title" show-toolbar :columns="columns" @confirm="onConfirm" @cancel="onCancel" />
     </van-popup>
@@ -12,7 +12,7 @@ export default {
   name: 'RelationSelect',
   props: {
     value: { default: null },
-    title: { default: null }
+    title: { default: '与本人关系' }
   },
   data() {
     return {

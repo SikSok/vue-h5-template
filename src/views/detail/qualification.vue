@@ -1,4 +1,4 @@
-<!-- 家庭情况详情块 -->
+<!-- 工作经历详情块 -->
 <template>
   <div>
     <!-- 空数据提示 -->
@@ -14,17 +14,25 @@
     <div v-for="(item, index) in items" :key="index" class="info-item">
       <van-cell class="cellItem-title">
         <template #title>
-          <span>家庭成员 {{ index + 1 }}</span>
+          <span>资质认证 {{ index + 1 }}</span>
           <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
         </template>
       </van-cell>
-      <van-cell title="姓名" :value="item.Contact | complete" />
-      <van-cell title="关系" :value="item.Relationship | complete" />
-      <van-cell title="工作单位" :value="item.Company | complete" />
-      <van-cell title="职位" :value="item.JobTitle | complete" />
-      <van-cell title="联系电话" :value="item.ContactTel | complete" />
-      <van-cell title="邮箱" :value="item.Postcode | complete" />
-      <van-cell title="地址" :value="item.Address | complete" />
+      <van-cell title="证照">
+        <template #right-icon>
+          <span style="color:#969799" v-if="item.Tyoe != '其他证件'">{{ item.Type | complete }}</span>
+          <span style="color:#969799" v-if="item.Tyoe == '其他证件'">{{ item.Name | complete }}</span>
+        </template>
+      </van-cell>
+      <van-cell title="编号" :value="item.CertificateNo | complete" />
+      <van-cell title="发证机构" :value="item.Authority | complete" />
+      <van-cell title="备案日期" :value="item.EnterDate | csdate | complete" />
+      <van-cell title="发证日期" :value="item.ReceivedDate | csdate | complete" />
+      <van-cell title="到期日期" :value="item.PeriodofValidity | csdate | complete" />
+      <van-cell title="提醒日期" :value="item.RemindDate | csdate | complete" />
+      <van-cell title="专业" :value="item.Major | complete" />
+      <van-cell title="等级" :value="item.Level | complete" />
+      <van-cell title="描述" :value="item.Comments | complete" />
     </div>
     <van-cell class="edit-cell" @click="SaveItem()">
       <template #title>
@@ -36,9 +44,9 @@
 
 <script>
 export default {
-  name: 'FamilyInfo',
+  name: 'QualificationInfo',
   props: {
-    familyData: { default: null }
+    qualificationData: { default: null }
   },
   data() {
     return {
@@ -47,7 +55,7 @@ export default {
     }
   },
   watch: {
-    familyData: {
+    qualificationData: {
       handler(val) {
         this.items = val
         if (this.items.length < 1) {
@@ -67,7 +75,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'familyEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'qualificationEditPage', params: { id: itemId, title: title } })
     }
   }
 }

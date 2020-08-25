@@ -3,17 +3,18 @@
     <van-field
       readonly
       clickable
-      label="工作地点"
-      :value="selectItem.Name"
-      placeholder="请选择工作地点"
+      :label="title"
+      :value="selectItem.Label"
+      :rules="rules"
+      placeholder="请选择"
       @click="show = true"
     />
     <van-popup v-model="show" position="bottom">
       <van-picker
-        title="工作地点"
+        :title="title"
         show-toolbar
-        :columns="columns"
-        value-key="Name"
+        :columns="parameters"
+        value-key="Label"
         @confirm="onConfirm"
         @cancel="onCancel"
       />
@@ -25,45 +26,45 @@
 export default {
   name: 'WorkPlaceSelect',
   props: {
-    value: { default: null }
+    title: { default: '表单项名称' },
+    value: { default: null },
+    // 待选参数对象数组
+    parameters: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    // 验证规则
+    rules: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {
       show: false,
-      columns: [],
       selectItem: {}
     }
   },
-  computed: {},
   methods: {
     onConfirm(value) {
       this.selectItem = value
-      this.$emit('input', value.Id)
+      this.$emit('input', value.Value)
       this.show = false
     },
     onCancel() {
       this.show = false
     }
   },
-  // 获取工作地点参数
-  created() {
-    var tenantId = this.$store.state.app.tenantId
-    this.getAxios('/Maintenance/{0}/GetWorkPlaces'.format(tenantId)).then(res => {
-      this.columns = []
-      res.forEach(element => {
-        var item = {}
-        item.Id = element.Id
-        item.Name = element.Name
-        this.columns.push(item)
-      })
-    })
-  },
   watch: {
     value: {
       handler(val) {
         if (val) {
-          this.columns.forEach(element => {
-            if (element.Id === val) {
+          this.parameters.forEach(element => {
+            if (element.Value === val) {
               this.selectItem = element
               return
             }

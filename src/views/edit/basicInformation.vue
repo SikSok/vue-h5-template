@@ -4,14 +4,8 @@
     <van-nav-bar title="编辑" l left-arrow @click-left="onClickLeft" />
     <van-cell-group title="基本信息">
       <van-form @submit="onSubmit">
-        <van-field
-          v-model="item.DisplayName"
-          label="姓名"
-          placeholder="请填写姓名"
-          :rules="[{ required: true, message: '请填写姓名' }]"
-          :disabled="true"
-        />
-        <van-field v-model="item.OrgNames" label="部门" placeholder="请选择部门（需包装组件）" />
+        <van-field v-model="item.DisplayName" label="姓名" :disabled="true" />
+        <van-field v-model="item.OrgNames" label="部门" :disabled="true" />
         <van-field v-model="item.JobTitle" label="职位" placeholder="请选择职位（需包装组件）" />
         <van-field
           v-model="item.Mobile"
@@ -51,9 +45,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      item: {},
-      username: '',
-      password: ''
+      item: {}
     }
   },
   methods: {

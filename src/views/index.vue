@@ -20,12 +20,25 @@
         <van-collapse-item title="家庭情况" :value="staffInfo.HasFamilyInfo | ifHasValue" name="2" icon="wap-home-o">
           <family-info :familyData="familyData" />
         </van-collapse-item>
+        <van-collapse-item title="教育背景" :value="staffInfo.HasEducationInfo | ifHasValue" name="3" icon="orders-o">
+          <education-info :educationData="educationData" />
+        </van-collapse-item>
+        <van-collapse-item
+          title="工作经历"
+          :value="staffInfo.HasWorkExperienceInfo | ifHasValue"
+          name="4"
+          icon="orders-o"
+        >
+          <work-history :workExperienceData="workHistoryData" />
+        </van-collapse-item>
+        <van-collapse-item title="资质认证" :value="staffInfo.HasQualicationInfo | ifHasValue" name="5" icon="orders-o">
+          <qualification :qualificationData="qualificationData" />
+        </van-collapse-item>
+        <van-collapse-item title="奖惩历史" :value="staffInfo.HasRewardInfo | ifHasValue" name="6" icon="orders-o">
+        </van-collapse-item>
+        <van-collapse-item title="附件" :value="staffInfo.HasFileInfo | ifHasValue" name="7" icon="orders-o">
+        </van-collapse-item>
       </van-collapse>
-      <van-cell title="教育背景" is-link icon="orders-o" to="basicInformation" />
-      <van-cell title="工作经历" is-link icon="orders-o" to="basicInformation" value="未填写" />
-      <van-cell title="资质认证" is-link icon="orders-o" to="basicInformation" value="未填写" />
-      <van-cell title="奖惩历史" is-link icon="orders-o" to="basicInformation" value="未填写" />
-      <van-cell title="附件" is-link icon="description" to="basicInformation" />
     </van-cell-group>
   </div>
 </template>
@@ -35,9 +48,12 @@ import setTest from '@/components/setTestData'
 import { Toast } from 'vant'
 import basicInfo from './detail/basicInfo'
 import familyInfo from './detail/familyInfo'
+import educationInfo from './detail/educationInfo'
+import workHistory from './detail/workExperience'
+import qualification from './detail/qualification'
 export default {
   name: 'Home',
-  components: { basicInfo, familyInfo, setTest },
+  components: { basicInfo, familyInfo, setTest, educationInfo, workHistory, qualification },
   data() {
     return {
       staffId: 0,
@@ -45,7 +61,10 @@ export default {
       staffInfo: {},
       activeName: '0',
       basicInfo: {}, // 基础信息
-      familyData: [] // 家庭信息
+      familyData: [], // 家庭信息
+      educationData: [], // 教育背景
+      workHistoryData: [], // 工作经历
+      qualificationData: [] // 资质认证信息
     }
   },
   // 初始化
@@ -91,6 +110,15 @@ export default {
           break
         case '2':
           this.getInfo('GetFamilyInfo', 'familyData')
+          break
+        case '3':
+          this.getInfo('GetEducationInfo', 'educationData')
+          break
+        case '4':
+          this.getInfo('GetWorkingHistoryInfo', 'workHistoryData')
+          break
+        case '5':
+          this.getInfo('GetQualificationInfo', 'qualificationData')
           break
       }
     }

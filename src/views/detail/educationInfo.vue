@@ -14,17 +14,20 @@
     <div v-for="(item, index) in items" :key="index" class="info-item">
       <van-cell class="cellItem-title">
         <template #title>
-          <span>家庭成员 {{ index + 1 }}</span>
+          <span>教育背景 {{ index + 1 }}</span>
           <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
         </template>
       </van-cell>
-      <van-cell title="姓名" :value="item.Contact | complete" />
-      <van-cell title="关系" :value="item.Relationship | complete" />
-      <van-cell title="工作单位" :value="item.Company | complete" />
-      <van-cell title="职位" :value="item.JobTitle | complete" />
-      <van-cell title="联系电话" :value="item.ContactTel | complete" />
-      <van-cell title="邮箱" :value="item.Postcode | complete" />
-      <van-cell title="地址" :value="item.Address | complete" />
+      <van-cell title="学校" :value="item.Institution | complete" />
+      <van-cell title="专业" :value="item.Major | complete" />
+      <van-cell title="入校时间" :value="item.StartDate | csdate | complete" />
+      <van-cell title="结业时间" :value="item.EndDate | csdate | complete" />
+      <van-cell title="学历" :value="item.Degree | translateParameter('Hr.EducationDegreeOptions') | complete" />
+      <van-cell title="教育形式" :value="item.Type | translateParameter('Hr.RecruitmentType') | complete" />
+      <van-cell title="学历类型" :value="item.DegreeType | translateParameter('Hr.DegreeType') | complete" />
+      <van-cell title="取得学位" :value="item.IsCertNo | trueOrFalse | complete" />
+      <van-cell title="最高学历" :value="item.IsDegree | trueOrFalse | complete" />
+      <van-cell title="教育证书照" :value="item.FildId | complete" />
     </div>
     <van-cell class="edit-cell" @click="SaveItem()">
       <template #title>
@@ -36,9 +39,9 @@
 
 <script>
 export default {
-  name: 'FamilyInfo',
+  name: 'EducationInfo',
   props: {
-    familyData: { default: null }
+    educationData: { default: null }
   },
   data() {
     return {
@@ -47,7 +50,7 @@ export default {
     }
   },
   watch: {
-    familyData: {
+    educationData: {
       handler(val) {
         this.items = val
         if (this.items.length < 1) {
@@ -67,7 +70,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'familyEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'educationEditPage', params: { id: itemId, title: title } })
     }
   }
 }

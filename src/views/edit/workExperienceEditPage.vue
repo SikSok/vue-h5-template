@@ -1,30 +1,38 @@
-<!-- 家庭信息 维护页 -->
+<!-- 工作经历 维护页 -->
 <template>
   <div class="edit-page">
     <van-nav-bar :title="pageTitle" l left-arrow @click-left="onClickLeft" />
-    <van-cell-group title="家庭成员">
+    <van-cell-group title="工作经历">
       <van-form @submit="onSubmit">
         <van-field
-          v-model="item.Contact"
-          label="姓名"
-          placeholder="请填写姓名"
-          :rules="[{ required: true, message: '请填写姓名' }]"
+          v-model="item.Empolyer"
+          label="公司名称"
+          placeholder="请填写公司名称"
+          :rules="[{ required: true, message: '请填写公司名称' }]"
         />
-        <relation-select title="与本人关系" v-model="item.Relationship" @input="change" />
-        <van-field v-model="item.Company" label="工作单位" placeholder="请填写工作单位" />
-        <van-field v-model="item.JobTitle" label="职位" placeholder="请填写职位" />
         <van-field
-          v-model="item.ContactTel"
-          type="tel"
-          label="联系电话"
-          placeholder="请填写联系电话"
-          :rules="[
-            { required: true, message: '请填写联系电话' },
-            { pattern: /^1[3456789]\d{9}$/, message: '号码格式错误！' }
-          ]"
+          v-model="item.Title"
+          label="担任职位"
+          placeholder="请填写担任职位"
+          :rules="[{ required: true, message: '请填写担任职位' }]"
         />
-        <van-field v-model="item.Postcode" type="tel" label="邮箱" placeholder="请填写邮箱" />
-        <van-field v-model="item.Address" type="tel" label="地址" placeholder="请填写地址" />
+        <date-time-picker
+          v-model="item.StartDate"
+          title="入职日期"
+          :rules="[{ required: true, message: '请填写入职日期' }]"
+          @input="change"
+        />
+        <date-time-picker v-model="item.EndDate" title="离职日期" @input="change" />
+        <van-field
+          v-model="item.Description"
+          rows="2"
+          autosize
+          label="职位描述"
+          type="textarea"
+          maxlength="150"
+          show-word-limit
+          placeholder="请填写职位描述"
+        />
         <van-cell>
           <template #title>
             <van-row type="flex" justify="center">
@@ -40,14 +48,12 @@
 
 <script>
 export default {
-  name: 'FamilyEditPage',
+  name: 'EducationEditPage',
   data() {
     return {
       pageTitle: '编辑',
       tenantId: 0,
-      item: {},
-      username: '',
-      password: ''
+      item: {}
     }
   },
   methods: {
@@ -56,14 +62,14 @@ export default {
     },
     // 提交
     onSubmit(values) {
-      this.postAxios('/WpRelation/{0}'.format(this.tenantId), {}, this.item).then(res => {
+      this.postAxios('/WpWorkHistory/{0}'.format(this.tenantId), {}, this.item).then(res => {
         this.item = res
         this.$router.go(-1)
       })
     },
     // 获取数据
     getData(id) {
-      this.getAxios('/WpRelation/{0}'.format(this.tenantId), { id: id }).then(res => {
+      this.getAxios('/WpWorkHistory/{0}'.format(this.tenantId), { id: id }).then(res => {
         this.item = res
       })
     },

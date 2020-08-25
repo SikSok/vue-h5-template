@@ -1,4 +1,4 @@
-<!-- 家庭情况详情块 -->
+<!-- 工作经历详情块 -->
 <template>
   <div>
     <!-- 空数据提示 -->
@@ -14,17 +14,15 @@
     <div v-for="(item, index) in items" :key="index" class="info-item">
       <van-cell class="cellItem-title">
         <template #title>
-          <span>家庭成员 {{ index + 1 }}</span>
+          <span>工作经历 {{ index + 1 }}</span>
           <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
         </template>
       </van-cell>
-      <van-cell title="姓名" :value="item.Contact | complete" />
-      <van-cell title="关系" :value="item.Relationship | complete" />
-      <van-cell title="工作单位" :value="item.Company | complete" />
-      <van-cell title="职位" :value="item.JobTitle | complete" />
-      <van-cell title="联系电话" :value="item.ContactTel | complete" />
-      <van-cell title="邮箱" :value="item.Postcode | complete" />
-      <van-cell title="地址" :value="item.Address | complete" />
+      <van-cell title="公司名称" :value="item.Empolyer | complete" />
+      <van-cell title="担任职位" :value="item.Title | complete" />
+      <van-cell title="入职日期" :value="item.StartDate | csdate | complete" />
+      <van-cell title="离职日期" :value="item.EndDate | csdate | complete" />
+      <van-cell title="职位描述" :value="item.Description | complete" />
     </div>
     <van-cell class="edit-cell" @click="SaveItem()">
       <template #title>
@@ -38,7 +36,7 @@
 export default {
   name: 'FamilyInfo',
   props: {
-    familyData: { default: null }
+    workExperienceData: { default: null }
   },
   data() {
     return {
@@ -47,7 +45,7 @@ export default {
     }
   },
   watch: {
-    familyData: {
+    workExperienceData: {
       handler(val) {
         this.items = val
         if (this.items.length < 1) {
@@ -67,7 +65,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'familyEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'workExperienceEditPage', params: { id: itemId, title: title } })
     }
   }
 }
