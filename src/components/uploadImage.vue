@@ -46,7 +46,7 @@ export default {
       fileItem.FileName = file.file.name
       fileItem.FileType = file.file.type
       fileItem.FileSize = file.file.size
-      this.postAxios('api/DbFile/{0}/WpUpLoad'.format(this.tenantId), {}, fileItem, '').then(res => {
+      this.postAxios('/WpDbfile/{0}/WpUpLoad'.format(this.tenantId), {}, fileItem).then(res => {
         this.fileIds.push(res)
       })
     },
@@ -68,19 +68,23 @@ export default {
     },
     fileIds: {
       handler(val) {
+        // 问题 请求还没执行完 又执行请求报错！！！！！！！！！！！！！！
         var _this = this
         // 返回获取图片地址索引
         _this.$emit('input', val.join(','))
         // 获取已上传图片 的DataUrlSchell
-        if (this.fileIds.length > 0) {
-          this.postAxios('api/DbFile/{0}/GetDataUrlScheme'.format(_this.tenantId), {}, _this.fileIds, '').then(res => {
+        var fileIdsStr = val.join(',')
+        if (fileIdsStr.length > 0) {
+          this.getAxios('/WpDbfile/{0}/{1}'.format(_this.tenantId, fileIdsStr)).then(res => {
             _this.fileList = []
-            res.forEach(element => {
-              var item = {}
-              item.Id = element.Id
-              item.content = element.DataUrlSchellStr
-              _this.fileList.push(item)
-            })
+            if (res) {
+              res.forEach(element => {
+                var item = {}
+                item.Id = element.Id
+                item.content = element.DataUrlSchellStr
+                _this.fileList.push(item)
+              })
+            }
           })
         }
       },
