@@ -36,6 +36,11 @@
             <van-switch v-model="item.IsDegree" size="20" />
           </template>
         </van-field>
+        <van-field label="教育证书照">
+          <template #input>
+            <upload-image v-model="item.FildId" :tenantId="tenantId" />
+          </template>
+        </van-field>
         <van-cell>
           <template #title>
             <van-row type="flex" justify="center">

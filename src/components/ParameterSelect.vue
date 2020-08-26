@@ -62,7 +62,7 @@ export default {
   watch: {
     value: {
       handler(val) {
-        if (val) {
+        if (val != null) {
           this.parameters.forEach(element => {
             if (element.Value === val) {
               this.selectItem = element

@@ -15,25 +15,21 @@
       <div v-for="(item, index) in items" :key="index" class="info-item">
         <van-cell class="cellItem-title">
           <template #title>
-            <span>资质认证 {{ index + 1 }}</span>
+            <span>奖惩历史 {{ index + 1 }}</span>
             <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
           </template>
         </van-cell>
-        <van-cell title="证照">
+        <van-cell title="类型">
           <template #right-icon>
-            <span style="color:#969799" v-if="item.Type != '其他证件'">{{ item.Type | complete }}</span>
-            <span style="color:#969799" v-if="item.Type == '其他证件'">{{ item.Name | complete }}</span>
+            <span style="color:#969799" v-if="item.Type != 0">惩罚</span>
+            <span style="color:#969799" v-if="item.Type == 0">奖励</span>
           </template>
         </van-cell>
-        <van-cell title="编号" :value="item.CertificateNo | complete" />
-        <van-cell title="发证机构" :value="item.Authority | complete" />
-        <van-cell title="备案日期" :value="item.EnterDate | csdate | complete" />
-        <van-cell title="发证日期" :value="item.ReceivedDate | csdate | complete" />
-        <van-cell title="到期日期" :value="item.PeriodofValidity | csdate | complete" />
-        <van-cell title="提醒日期" :value="item.RemindDate | csdate | complete" />
-        <van-cell title="专业" :value="item.Major | complete" />
-        <van-cell title="等级" :value="item.Level | complete" />
-        <van-cell title="描述" :value="item.Comments | complete" />
+        <van-cell title="颁发机构" v-if="item.Type == 0" :value="item.Company | complete" />
+        <van-cell title="处置单位" v-if="item.Type != 0" :value="item.Company | complete" />
+        <van-cell title="原因" :value="item.Reason | complete" />
+        <van-cell title="发生日期" :value="item.Occured | csdate | complete" />
+        <van-cell title="备注说明" :value="item.Notes | complete" />
       </div>
       <van-cell class="edit-cell" @click="SaveItem()">
         <template #title>
@@ -46,9 +42,9 @@
 
 <script>
 export default {
-  name: 'QualificationInfo',
+  name: 'RewardHistory',
   props: {
-    qualificationData: { default: null }
+    rewardHistoryData: { default: null }
   },
   data() {
     return {
@@ -58,7 +54,7 @@ export default {
     }
   },
   watch: {
-    qualificationData: {
+    rewardHistoryData: {
       handler(val) {
         this.items = val
         if (this.items.length < 1) {
@@ -79,7 +75,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'qualificationEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'rewardHistoryEditPage', params: { id: itemId, title: title } })
     }
   }
 }

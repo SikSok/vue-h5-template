@@ -42,6 +42,7 @@
           <qualification :qualificationData="qualificationData" />
         </van-collapse-item>
         <van-collapse-item title="奖惩历史" :value="staffInfo.HasRewardInfo | ifHasValue" name="6" icon="orders-o">
+          <reward-history :rewardHistoryData="rewardHistoryData" />
         </van-collapse-item>
         <van-collapse-item title="附件" :value="staffInfo.HasFileInfo | ifHasValue" name="7" icon="orders-o">
         </van-collapse-item>
@@ -58,9 +59,10 @@ import familyInfo from './detail/familyInfo'
 import educationInfo from './detail/educationInfo'
 import workHistory from './detail/workExperience'
 import qualification from './detail/qualification'
+import rewardHistory from './detail/rewardHistory'
 export default {
   name: 'Home',
-  components: { basicInfo, familyInfo, setTest, educationInfo, workHistory, qualification },
+  components: { basicInfo, familyInfo, setTest, educationInfo, workHistory, qualification, rewardHistory },
   data() {
     return {
       loading: true,
@@ -72,7 +74,8 @@ export default {
       familyData: [], // 家庭信息
       educationData: [], // 教育背景
       workHistoryData: [], // 工作经历
-      qualificationData: [] // 资质认证信息
+      qualificationData: [], // 资质认证信息
+      rewardHistoryData: [] // 奖惩历史信息
     }
   },
   // 初始化
@@ -128,6 +131,9 @@ export default {
           break
         case '5':
           this.getInfo('GetQualificationInfo', 'qualificationData')
+          break
+        case '6':
+          this.getInfo('GetRewardHistoryInfo', 'rewardHistoryData')
           break
       }
     }

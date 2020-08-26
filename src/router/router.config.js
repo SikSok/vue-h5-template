@@ -56,5 +56,23 @@ export const constantRouterMap = [
       title: '编辑-资质认证',
       keepAlive: false
     }
+  },
+  {
+    path: '/rewardHistoryEditPage',
+    name: 'rewardHistoryEditPage',
+    component: () => import('@/views/edit/rewardHistoryEditPage'),
+    meta: {
+      title: '编辑-奖惩历史',
+      keepAlive: false
+    }
+  },
+  {
+    path: '/enclosureEditPage',
+    name: 'enclosureEditPage',
+    component: () => import('@/views/edit/enclosureEditPage'),
+    meta: {
+      title: '编辑-附件',
+      keepAlive: false
+    }
   }
 ]

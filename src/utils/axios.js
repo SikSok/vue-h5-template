@@ -33,9 +33,14 @@ axios.interceptors.response.use(
   }
 )
 
-const baseUrl = 'SchoolHR/api'
+let baseUrl = 'SchoolHR/api'
 // 封装axios
-function apiAxios(method, url, params, data) {
+function apiAxios(method, url, params, data, resetBaseUrl) {
+  if (resetBaseUrl != null) {
+    baseUrl = resetBaseUrl
+  } else {
+    baseUrl = 'SchoolHR/api'
+  }
   const httpDefault = {
     method: method,
     url: baseUrl + url,
@@ -89,10 +94,10 @@ function apiAxios(method, url, params, data) {
 // Vue.js的插件应当有一个公开方法 install。这个方法的第一个参数是 Vue 构造器，第二个参数是一个可选的选项对象。
 export default {
   install: function(Vue) {
-    Vue.prototype.getAxios = (url, params, data) => apiAxios('GET', url, params, data)
-    Vue.prototype.postAxios = (url, params, data) => apiAxios('POST', url, params, data)
-    Vue.prototype.putAxios = (url, params, data) => apiAxios('PUT', url, params, data)
-    Vue.prototype.patchAxios = (url, params, data) => apiAxios('PATCH', url, params, data)
-    Vue.prototype.deleteAxios = (url, params, data) => apiAxios('DELETE', url, params, data)
+    Vue.prototype.getAxios = (url, params, data, resetBaseUrl) => apiAxios('GET', url, params, data, resetBaseUrl)
+    Vue.prototype.postAxios = (url, params, data, resetBaseUrl) => apiAxios('POST', url, params, data, resetBaseUrl)
+    Vue.prototype.putAxios = (url, params, data, resetBaseUrl) => apiAxios('PUT', url, params, data, resetBaseUrl)
+    Vue.prototype.patchAxios = (url, params, data, resetBaseUrl) => apiAxios('PATCH', url, params, data, resetBaseUrl)
+    Vue.prototype.deleteAxios = (url, params, data, resetBaseUrl) => apiAxios('DELETE', url, params, data, resetBaseUrl)
   }
 }

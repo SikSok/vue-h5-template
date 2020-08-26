@@ -22,7 +22,8 @@ import {
   Toast,
   DatetimePicker,
   Picker,
-  Switch
+  Switch,
+  Uploader
 } from 'vant'
 Vue.use(Button)
 Vue.use(Cell)
@@ -45,14 +46,17 @@ Vue.use(Toast)
 Vue.use(DatetimePicker)
 Vue.use(Picker)
 Vue.use(Switch)
+Vue.use(Uploader)
 
 // 全局引用自定义组件
 import DateTimePicker from '@/components/dateTimePicker'
 import WorkplaceSelect from '@/components/WorkPlace'
 import RelationSelect from '@/components/RelationSelect'
 import ParameterSelect from '@/components/ParameterSelect'
+import UploadImage from '@/components/uploadImage'
 
 Vue.component('DateTimePicker', DateTimePicker)
 Vue.component('WorkplaceSelect', WorkplaceSelect)
 Vue.component('RelationSelect', RelationSelect)
 Vue.component('ParameterSelect', ParameterSelect)
+Vue.component('UploadImage', UploadImage)
