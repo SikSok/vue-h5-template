@@ -4,11 +4,12 @@
     <van-field :label="label" style="border-bottom:none"></van-field>
     <div style="padding:0px 17px 11px 17px">
       <div v-if="!multiple">
-        <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="deleteFile" />
+        <van-uploader v-model="fileList" accept="image/*" :after-read="afterRead" :before-delete="deleteFile" />
       </div>
       <div v-if="multiple">
         <van-uploader
           v-model="fileList"
+          accept="image/*"
           :after-read="afterRead"
           :before-delete="deleteFile"
           multiple
@@ -60,7 +61,7 @@ export default {
       fileItem.FileType = file.file.type
       fileItem.FileSize = file.file.size
       this.postAxios('/WpDbfile/{0}/WpUpLoad'.format(this.tenantId), {}, fileItem).then(res => {
-        this.fileIds.push(res)
+        this.fileIds.push(res.Id)
       })
     },
     // 删除某个文件

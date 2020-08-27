@@ -19,17 +19,9 @@
             <span style="float:right;" @click="SaveItem(item)"><van-icon name="edit" size="18"/></span>
           </template>
         </van-cell>
-        <van-cell title="类型">
-          <template #right-icon>
-            <span style="color:#969799" v-if="item.Type != 0">惩罚</span>
-            <span style="color:#969799" v-if="item.Type == 0">奖励</span>
-          </template>
-        </van-cell>
-        <van-cell title="颁发机构" v-if="item.Type == 0" :value="item.Company | complete" />
-        <van-cell title="处置单位" v-if="item.Type != 0" :value="item.Company | complete" />
-        <van-cell title="原因" :value="item.Reason | complete" />
-        <van-cell title="发生日期" :value="item.Occured | csdate | complete" />
-        <van-cell title="备注说明" :value="item.Notes | complete" />
+        <van-cell title="名称" :value="item.Name | complete" />
+        <van-cell title="大小" :value="item.FileSize | complete" />
+        <van-cell title="描述" :value="item.Description | complete" />
       </div>
       <van-cell class="edit-cell" @click="SaveItem()">
         <template #title>
@@ -44,7 +36,7 @@
 export default {
   name: 'RewardHistory',
   props: {
-    rewardHistoryData: { default: null }
+    enclosureData: { default: null }
   },
   data() {
     return {
@@ -54,7 +46,7 @@ export default {
     }
   },
   watch: {
-    rewardHistoryData: {
+    enclosureData: {
       handler(val) {
         this.items = val
         if (this.items.length < 1) {
@@ -75,7 +67,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'rewardHistoryEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'enclosureEditPage', params: { id: itemId, title: title } })
     }
   }
 }

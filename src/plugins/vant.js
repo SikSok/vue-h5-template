@@ -54,9 +54,11 @@ import WorkplaceSelect from '@/components/WorkPlace'
 import RelationSelect from '@/components/RelationSelect'
 import ParameterSelect from '@/components/ParameterSelect'
 import UploadImage from '@/components/uploadImage'
+import UploadFile from '@/components/uploadFile'
 
 Vue.component('DateTimePicker', DateTimePicker)
 Vue.component('WorkplaceSelect', WorkplaceSelect)
 Vue.component('RelationSelect', RelationSelect)
 Vue.component('ParameterSelect', ParameterSelect)
 Vue.component('UploadImage', UploadImage)
+Vue.component('UploadFile', UploadFile)
