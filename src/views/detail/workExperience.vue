@@ -69,7 +69,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'workExperienceEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'workExperienceEditPage', query: { id: itemId, title: title } })
     }
   }
 }

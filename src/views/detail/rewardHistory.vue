@@ -75,7 +75,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'rewardHistoryEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'rewardHistoryEditPage', query: { id: itemId, title: title } })
     }
   }
 }

@@ -3,18 +3,22 @@
   <div>
     <van-field :label="label" style="border-bottom:none"></van-field>
     <div style="padding:0px 17px 11px 17px">
+      <div
+        v-for="(id, index) in fileIds"
+        :key="index"
+        :style="{ width: '88.4px', height: '88.4px' }"
+        class="upload-show-multiple"
+      >
+        <img :src="getFileUrl(tenantId, id)" />
+        <div class="pic-delete" @click="deleteImg(id)">
+          <van-icon size="13" name="cross" />
+        </div>
+      </div>
       <div v-if="!multiple">
-        <van-uploader v-model="fileList" accept="image/*" :after-read="afterRead" :before-delete="deleteFile" />
+        <van-uploader accept="image/*" :after-read="afterRead" :preview-image="false" />
       </div>
       <div v-if="multiple">
-        <van-uploader
-          v-model="fileList"
-          accept="image/*"
-          :after-read="afterRead"
-          :before-delete="deleteFile"
-          multiple
-          :max-count="max"
-        />
+        <van-uploader accept="image/*" :after-read="afterRead" :preview-image="false" multiple :max-count="max" />
       </div>
     </div>
   </div>
@@ -46,8 +50,7 @@ export default {
   },
   data() {
     return {
-      fileIds: [],
-      fileList: []
+      fileIds: []
     }
   },
   methods: {
@@ -65,17 +68,8 @@ export default {
       })
     },
     // 删除某个文件
-    deleteFile(file) {
-      this.fileList.splice(this.fileList.indexOf(file), 1) // 从展示组中删除
-      this.fileIds.splice(this.fileIds.indexOf(file.Id), 1) // 从返回索引中删除该索引
-    },
-    // 获取已上传图片 缓存地址
-    getDataUrlSchell(ids) {
-      this.fileList = []
-      ids.forEach(id => {
-        var item = { url: this.getFileUrl(this.tenantId, id), Id: id }
-        this.fileList.push(item)
-      })
+    deleteImg(id) {
+      this.fileIds.splice(this.fileIds.indexOf(id), 1) // 从返回索引中删除该索引
     }
   },
   watch: {
@@ -83,7 +77,6 @@ export default {
       handler(val) {
         if (val) {
           this.fileIds = val.split(',')
-          this.getDataUrlSchell(this.fileIds)
         }
       },
       immediate: true,

@@ -9,7 +9,7 @@ Vue.prototype.getFileUrl = function(tenantId, id) {
     for (let i = 0; i < testHosts.length; i++) {
       const host = testHosts[i]
       if (currentHost.indexOf(host) > -1) {
-        return 'http://{0}/api/PubFile/{1}/Avatar/{2}'.format(currentHost, tenantId, id)
+        return 'http://{0}/api/DbFile/{1}/download/{2}'.format(currentHost, tenantId, id)
       }
     }
     return '{0}/api/PubFile/{1}/Avatar/{2}'.format(openApiUrl, tenantId, id)

@@ -67,7 +67,7 @@ export default {
         itemId = item.Id
         title = '编辑'
       }
-      this.$router.push({ name: 'enclosureEditPage', params: { id: itemId, title: title } })
+      this.$router.push({ name: 'enclosureEditPage', query: { id: itemId, title: title } })
     }
   }
 }
