@@ -1,11 +1,20 @@
 <!-- 图片上传组件 -->
 <template>
   <div>
-    <div v-if="!multiple">
-      <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="deleteFile" />
-    </div>
-    <div v-if="multiple">
-      <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="deleteFile" multiple :max-count="max" />
+    <van-field :label="label" style="border-bottom:none"></van-field>
+    <div style="padding:0px 17px 11px 17px">
+      <div v-if="!multiple">
+        <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="deleteFile" />
+      </div>
+      <div v-if="multiple">
+        <van-uploader
+          v-model="fileList"
+          :after-read="afterRead"
+          :before-delete="deleteFile"
+          multiple
+          :max-count="max"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +29,10 @@ export default {
     },
     tenantId: {
       default: null
+    },
+    label: {
+      type: String,
+      default: '标题'
     },
     multiple: {
       type: Boolean,
@@ -54,6 +67,14 @@ export default {
     deleteFile(file) {
       this.fileList.splice(this.fileList.indexOf(file), 1) // 从展示组中删除
       this.fileIds.splice(this.fileIds.indexOf(file.Id), 1) // 从返回索引中删除该索引
+    },
+    // 获取已上传图片 缓存地址
+    getDataUrlSchell(ids) {
+      this.fileList = []
+      ids.forEach(id => {
+        var item = { url: this.getFileUrl(this.tenantId, id), Id: id }
+        this.fileList.push(item)
+      })
     }
   },
   watch: {
@@ -61,32 +82,16 @@ export default {
       handler(val) {
         if (val) {
           this.fileIds = val.split(',')
+          this.getDataUrlSchell(this.fileIds)
         }
       },
-      immediate: false,
+      immediate: true,
       deep: true
     },
     fileIds: {
       handler(val) {
-        // 问题 请求还没执行完 又执行请求报错！！！！！！！！！！！！！！
-        var _this = this
         // 返回获取图片地址索引
-        _this.$emit('input', val.join(','))
-        // 获取已上传图片 的DataUrlSchell
-        var fileIdsStr = val.join(',')
-        if (fileIdsStr.length > 0) {
-          this.getAxios('/WpDbfile/{0}/{1}'.format(_this.tenantId, fileIdsStr)).then(res => {
-            _this.fileList = []
-            if (res) {
-              res.forEach(element => {
-                var item = {}
-                item.Id = element.Id
-                item.content = element.DataUrlSchellStr
-                _this.fileList.push(item)
-              })
-            }
-          })
-        }
+        this.$emit('input', val.join(','))
       },
       immediate: true,
       deep: true
