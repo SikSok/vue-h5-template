@@ -6,7 +6,8 @@
       <template>
         <van-skeleton title avatar avatar-size="45px" :row="1" :loading="loading">
           <div class="headerBox">
-            <img class="headerPic" src="@/assets/headPic.png" />
+            <!-- <img class="headerPic" src="@/assets/headPic.png" /> -->
+            <img class="headerPic" :src="staffInfo.PhotoImageUrl" />
             <div>
               <h3>{{ staffInfo.Name }}<set-test @initPage="UseTestSettinh" /></h3>
               <p>
