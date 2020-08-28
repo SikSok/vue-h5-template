@@ -78,7 +78,7 @@ export default {
   },
   // 进入页面触发初始化事件
   mounted() {
-    this.tenantId = this.$store.state.app.tenantId
+    this.tenantId = this.$store.state.ctx.TenantId
     if (this.$route.query.title) {
       this.pageTitle = this.$route.query.title
     }
@@ -86,7 +86,7 @@ export default {
     if (this.$route.query.id > 0) {
       this.getData(this.$route.query.id)
     } else {
-      this.item.staffId = this.$store.state.app.staffId
+      this.item.staffId = this.$store.state.ctx.TenantMember.StaffId
     }
   }
 }

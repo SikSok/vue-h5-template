@@ -9,7 +9,7 @@
             <!-- <img class="headerPic" src="@/assets/headPic.png" /> -->
             <img class="headerPic" :src="staffInfo.PhotoImageUrl" />
             <div>
-              <h3>{{ staffInfo.Name }}<set-test @initPage="UseTestSettinh" /></h3>
+              <h3>{{ staffInfo.Name }}</h3>
               <p>
                 <span>{{ staffInfo.JobTitle }}</span
                 ><br /><span>已在本校任职了{{ staffInfo.JoinDays }}天</span>
@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import setTest from '@/components/setTestData'
 import { Toast } from 'vant'
 import basicInfo from './detail/basicInfo'
 import familyInfo from './detail/familyInfo'
@@ -65,7 +64,7 @@ import rewardHistory from './detail/rewardHistory'
 import enclosure from './detail/enclosure'
 export default {
   name: 'Home',
-  components: { basicInfo, familyInfo, setTest, educationInfo, workHistory, qualification, rewardHistory, enclosure },
+  components: { basicInfo, familyInfo, educationInfo, workHistory, qualification, rewardHistory, enclosure },
   data() {
     return {
       loading: true,
@@ -85,16 +84,11 @@ export default {
   // 初始化
   mounted() {
     this.activeName = this.$store.state.app.activeName
-    // this.init()
-    this.UseTestSettinh()
+    this.tenantId = this.$store.state.ctx.TenantId
+    this.staffId = this.$store.state.ctx.TenantMember.StaffId
+    this.init()
   },
   methods: {
-    // 使用测试配置数据
-    UseTestSettinh() {
-      this.tenantId = this.$store.state.app.tenantId
-      this.staffId = this.$store.state.app.staffId
-      this.init()
-    },
     // 返回事件
     onClickLeft() {
       this.$router.go(-1)

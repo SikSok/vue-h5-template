@@ -55,7 +55,7 @@ export default {
     },
     // 提交更新
     onSubmit() {
-      var tenantId = this.$store.state.app.tenantId
+      var tenantId = this.$store.state.ctx.TenantId
       this.putAxios('/WpTenantStaff/{0}'.format(tenantId), {}, this.item).then(res => {
         this.item = res
         this.$router.go(-1)
@@ -68,8 +68,8 @@ export default {
   },
   // 获取员工基本信息数据
   mounted() {
-    var tenantId = this.$store.state.app.tenantId
-    var staffId = this.$store.state.app.staffId
+    var tenantId = this.$store.state.ctx.TenantId
+    var staffId = this.$store.state.ctx.TenantMember.StaffId
     this.getAxios('/WpTenantStaff/{0}'.format(tenantId), { staffId: staffId }).then(res => {
       this.item = res
     })
