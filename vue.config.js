@@ -52,7 +52,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-        target: 'http://localhost:56311',
+        target: 'http://localhost:51849',
         changOrigin: true
       }
     }

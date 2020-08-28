@@ -33,7 +33,10 @@ axios.interceptors.response.use(
   }
 )
 
-const baseUrl = 'SchoolHR/api'
+let baseUrl = 'api'
+if (process.env.NODE_ENV === 'development') {
+  baseUrl = 'SchoolHR/api'
+}
 // 封装axios
 function apiAxios(method, url, params, data) {
   const httpDefault = {
