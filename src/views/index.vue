@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import { Toast } from 'vant'
 import basicInfo from './detail/basicInfo'
 import familyInfo from './detail/familyInfo'
 import educationInfo from './detail/educationInfo'
@@ -68,7 +67,6 @@ export default {
   data() {
     return {
       loading: true,
-      staffId: 0,
       tenantId: 0,
       staffInfo: {},
       activeName: '0',
@@ -85,7 +83,7 @@ export default {
   mounted() {
     this.activeName = this.$store.state.app.activeName
     this.tenantId = this.$store.state.ctx.TenantId
-    this.staffId = this.$store.state.ctx.TenantMember.StaffId
+    this.userId = this.$store.state.ctx.TenantMember.Id
     this.init()
   },
   methods: {
@@ -95,14 +93,16 @@ export default {
     },
     // 初始化，查询员工人事档案信息
     init() {
-      this.getAxios('/Information/{0}'.format(this.tenantId), { staffId: this.staffId }).then(res => {
+      this.getAxios('/Information/{0}'.format(this.tenantId), { userId: this.userId }).then(res => {
         this.staffInfo = res
+        this.$store.dispatch('app/setStaffId', res.StaffId)
         this.loading = false
       })
     },
     // 获取某项基础信息
     getInfo(infoType, receiveItem) {
-      this.getAxios('/Maintenance/{0}/{1}'.format(this.tenantId, infoType), { staffId: this.staffId }).then(res => {
+      var staffId = this.$store.state.app.staffId
+      this.getAxios('/Maintenance/{0}/{1}'.format(this.tenantId, infoType), { staffId: staffId }).then(res => {
         this[receiveItem] = res
       })
     }

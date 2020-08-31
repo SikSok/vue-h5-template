@@ -57,28 +57,23 @@ function apiAxios(method, url, params, data) {
         return res
       })
       .catch(error => {
-        let message = "";
+        let message = ''
         if (error.response) {
-            if (error.response.data) {
-                if (error.response.data.errors) {
-                    message = JSON.stringify(error.response.data.errors);
-                }
-                else if (error.response.data.error) {
-                    message = error.response.data.error;
-                }
-                else if (error.response.data.detail) {
-                    message = error.response.data.detail;
-                }
-                else {
-                    message = error.response.data;
-                }
+          if (error.response.data) {
+            if (error.response.data.errors) {
+              message = JSON.stringify(error.response.data.errors)
+            } else if (error.response.data.error) {
+              message = error.response.data.error
+            } else if (error.response.data.detail) {
+              message = error.response.data.detail
+            } else {
+              message = error.response.data
             }
-            else if (error.response.statusText) {
-                message = error.response.statusText;
-            }
-        }
-        else {
-            message = error.message;
+          } else if (error.response.statusText) {
+            message = error.response.statusText
+          }
+        } else {
+          message = error.message
         }
 
         Toast(message)

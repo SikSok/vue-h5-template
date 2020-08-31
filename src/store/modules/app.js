@@ -1,7 +1,7 @@
 const state = {
   // 测试数据
   tenantId: 4,
-  staffId: 1,
+  staffId: 0,
   userId: 0,
   // 全局数据
   activeName: 0
