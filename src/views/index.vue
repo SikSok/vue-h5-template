@@ -92,7 +92,6 @@ export default {
     // 返回事件
     onClickLeft() {
       this.$router.go(-1)
-      Toast('返回')
     },
     // 初始化，查询员工人事档案信息
     init() {

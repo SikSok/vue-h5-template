@@ -34,7 +34,9 @@
           <template #title>
             <van-row type="flex" justify="center">
               <van-col span="7" style="text-align:center;"> <van-button type="info">提交</van-button></van-col>
-              <van-col span="7" style="text-align:center;"> <van-button type="danger">删除</van-button></van-col>
+              <van-col span="7" style="text-align:center;">
+                <van-button native-type="button" @click="Delete()" type="danger">删除</van-button>
+              </van-col>
             </van-row>
           </template>
         </van-cell>
@@ -44,6 +46,7 @@
 </template>
 
 <script>
+import { Dialog } from 'vant'
 import Parameters from '@/utils/parameters'
 export default {
   name: 'QualificationEditPage',
@@ -71,6 +74,23 @@ export default {
       this.getAxios('/WpQualification/{0}'.format(this.tenantId), { id: id }).then(res => {
         this.item = res
       })
+    },
+    // 删除数据
+    Delete() {
+      var _this = this
+      Dialog.alert({
+        title: '提示',
+        message: '删除确认',
+        showCancelButton: true
+      })
+        .then(() => {
+          _this.deleteAxios('/WpExAttachment/{0}'.format(_this.tenantId), { id: _this.item.Id }).then(res => {
+            _this.$router.go(-1)
+          })
+        })
+        .catch(() => {
+          close()
+        })
     },
     change() {
       this.$forceUpdate()

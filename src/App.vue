@@ -22,5 +22,8 @@ if (process.env.NODE_ENV === 'development') {
     window.location.href = '/index.html?timestamp=' + new Date().getTime()
   }
 }
+if (!sessionStorage.getItem('token')) {
+  window.location.href = '/WPOAuth2/SchoolHr-Wp?appCode=CloudSchools'
+}
 </script>
 <style lang="scss"></style>

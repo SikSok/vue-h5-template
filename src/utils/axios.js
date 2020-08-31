@@ -2,16 +2,11 @@
 
 import axios from 'axios'
 import { Toast } from 'vant'
+import store from '../store'
 
 // 添加请求拦截器，在发送请求之前做些什么
 axios.interceptors.request.use(
   config => {
-    // 不传递默认开启loading
-    // if (!config.hideloading) {
-    //   Toast.loading({
-    //     forbidClick: true
-    //   })
-    // }
     return config
   },
   error => {
@@ -48,7 +43,8 @@ function apiAxios(method, url, params, data) {
     withCredentials: false, // axios 默认不发送cookie，需要全局设置true发送cookie
     headers: {
       // 配置请求头
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      Authorization: store.state.token
     }
   }
 
@@ -61,28 +57,31 @@ function apiAxios(method, url, params, data) {
         return res
       })
       .catch(error => {
-        let message = ''
+        let message = "";
         if (error.response) {
-          if (error.response.data) {
-            if (error.response.data.errors) {
-              message = JSON.stringify(error.response.data.errors)
-            } else if (error.response.data.error) {
-              message = error.response.data.error
-            } else if (error.response.data.detail) {
-              message = error.response.data.detail
-            } else {
-              message = error.response.data
+            if (error.response.data) {
+                if (error.response.data.errors) {
+                    message = JSON.stringify(error.response.data.errors);
+                }
+                else if (error.response.data.error) {
+                    message = error.response.data.error;
+                }
+                else if (error.response.data.detail) {
+                    message = error.response.data.detail;
+                }
+                else {
+                    message = error.response.data;
+                }
             }
-          } else if (error.response.statusText) {
-            message = error.response.statusText
-          }
-        } else {
-          message = error.message
+            else if (error.response.statusText) {
+                message = error.response.statusText;
+            }
+        }
+        else {
+            message = error.message;
         }
 
-        // 封装数据返回失败提示函数
-        console.log(message)
-        Toast('服务器错误')
+        Toast(message)
         reject(message)
       })
   })

@@ -23,7 +23,8 @@ import {
   DatetimePicker,
   Picker,
   Switch,
-  Uploader
+  Uploader,
+  Dialog
 } from 'vant'
 Vue.use(Button)
 Vue.use(Cell)
@@ -47,6 +48,7 @@ Vue.use(DatetimePicker)
 Vue.use(Picker)
 Vue.use(Switch)
 Vue.use(Uploader)
+Vue.use(Dialog)
 
 // 全局引用自定义组件
 import DateTimePicker from '@/components/dateTimePicker'
