@@ -29,7 +29,7 @@
           <template #title>
             <van-row type="flex" justify="center">
               <van-col span="7" style="text-align:center;"> <van-button type="info">提交</van-button></van-col>
-              <van-col span="7" style="text-align:center;">
+              <van-col span="7" style="text-align:center;" v-if="item.Id > 0">
                 <van-button native-type="button" @click="Delete()" type="danger">删除</van-button>
               </van-col>
             </van-row>
