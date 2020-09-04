@@ -2,10 +2,19 @@
 <template>
   <div class="edit-page">
     <van-nav-bar title="编辑" l left-arrow @click-left="onClickLeft" />
+    <van-cell>
+      <!-- 使用 title 插槽来自定义标题 -->
+      <template #title>
+        <span class="custom-title">仅显示可编辑项</span>
+      </template>
+      <template #default>
+        <van-switch v-model="onlyShowEditItems" size="20" />
+      </template>
+    </van-cell>
     <van-cell-group title="基本信息">
       <van-form @submit="onSubmit">
-        <van-field v-model="item.DisplayName" label="姓名" :disabled="true" />
-        <van-field v-model="item.OrgNames" label="部门" :disabled="true" />
+        <van-field v-model="item.DisplayName" label="姓名" v-if="!onlyShowEditItems" :disabled="true" />
+        <van-field v-model="item.OrgNames" label="部门" v-if="!onlyShowEditItems" :disabled="true" />
         <van-field v-model="item.JobTitle" label="职位" placeholder="职位" />
         <van-field
           v-model="item.Mobile"
@@ -19,12 +28,10 @@
         />
         <van-field v-model="item.EnterpriseEmail" type="tel" label="邮箱" placeholder="请填写邮箱" />
         <van-field v-model="item.EmployeeNo" type="number" label="工号" placeholder="请填写工号" />
-        <van-field name="radio" label="性别">
+        <van-field name="radio" label="性别" v-if="!onlyShowEditItems" :disabled="true">
           <template #input>
-            <van-radio-group v-model="item.Gender" direction="horizontal">
-              <van-radio :name="1">男</van-radio>
-              <van-radio :name="2">女</van-radio>
-            </van-radio-group>
+            <span style="color: #c8c9cc;" v-if="item.Gender === 1">男</span>
+            <span style="color: #c8c9cc;" v-if="item.Gender === 2">女</span>
           </template>
         </van-field>
         <date-time-picker v-model="item.Birthday" title="生日" @input="change" />
@@ -45,7 +52,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      item: {}
+      item: {},
+      onlyShowEditItems: false // 仅显示可编辑项
     }
   },
   methods: {
@@ -60,7 +68,6 @@ export default {
         this.item = res
         this.$router.go(-1)
       })
-      this.$router.go(-1)
     },
     change() {
       this.$forceUpdate()
