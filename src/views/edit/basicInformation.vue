@@ -15,7 +15,7 @@
       <van-form @submit="onSubmit">
         <van-field v-model="item.DisplayName" label="姓名" v-if="!onlyShowEditItems" :disabled="true" />
         <van-field v-model="item.OrgNames" label="部门" v-if="!onlyShowEditItems" :disabled="true" />
-        <van-field v-model="item.JobTitle" label="职位" placeholder="职位" />
+        <van-field v-model="item.JobTitle" label="职位" v-if="!onlyShowEditItems" :disabled="true" />
         <van-field
           v-model="item.Mobile"
           type="tel"
@@ -30,8 +30,9 @@
         <van-field v-model="item.EmployeeNo" type="number" label="工号" placeholder="请填写工号" />
         <van-field name="radio" label="性别" v-if="!onlyShowEditItems" :disabled="true">
           <template #input>
-            <span style="color: #c8c9cc;" v-if="item.Gender === 1">男</span>
-            <span style="color: #c8c9cc;" v-if="item.Gender === 2">女</span>
+            <span style="color: #c8c9cc;" v-if="item.Gender === 0">未设置</span>
+            <span style="color: #c8c9cc;" v-if="item.Gender === 1">女</span>
+            <span style="color: #c8c9cc;" v-if="item.Gender === 2">男</span>
           </template>
         </van-field>
         <date-time-picker v-model="item.Birthday" title="生日" @input="change" />

@@ -35,10 +35,12 @@ Vue.filter('csGender', function(value) {
   if (!value) {
     return ''
   }
-  if (value === 1) {
-    return '男'
-  } else {
+  if (value === 0) {
+    return ''
+  } else if (value === 1) {
     return '女'
+  } else {
+    return '男'
   }
 })
 

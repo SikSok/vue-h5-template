@@ -23,8 +23,8 @@
             { pattern: /^1[3456789]\d{9}$/, message: '号码格式错误！' }
           ]"
         />
-        <van-field v-model="item.Postcode" type="tel" label="邮箱" placeholder="请填写邮箱" />
-        <van-field v-model="item.Address" type="tel" label="地址" placeholder="请填写地址" />
+        <van-field v-model="item.Postcode" label="邮箱" placeholder="请填写邮箱" />
+        <van-field v-model="item.Address" label="地址" placeholder="请填写地址" />
         <van-cell>
           <template #title>
             <van-row type="flex" justify="center">
