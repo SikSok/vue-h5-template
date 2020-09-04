@@ -10,13 +10,15 @@ export default {
 
 if (process.env.NODE_ENV === 'development') {
   const ctx =
-    '{"UserId":33,"WxUserId":20,"TenantId":4,"SchoolName":"常青云国际双语幼儿园北苑校园","Mobile":"15811585973","MemberType":1,"TenantMember":{"StaffId":6,"Mobile":"15811585973","DisplayName":"魏辰宇","Email":"chenyu.wei@cloudschools.cn","JobTitle":null,"LoginName":"15811585973","Gender":2,"Status":9,"CardNo":"","OrgId":0,"PhotoFileId":85633,"IsDeleted":false,"PhotoImageUrl":"http://api.apps.cloudschools.cn/api/pubfile/4/avatar/85633","TenantId":4,"Id":781,"Created":"2018-06-15T13:05:23+08:00","Modified":"2020-07-15T14:58:51+08:00"},"Parent":null,"Student":null,"ClientId":"demo-teacher","Menu":"[]","Perm":"{}","Language":"zh"}'
+    '{"UserId":33,"WxUserId":20,"TenantId":4,"SchoolName":"常青云国际双语幼儿园北苑校园","Mobile":"15811585973","MemberType":1,"TenantMember":{"StaffId":0,"Mobile":"15811585973","DisplayName":"魏辰宇","Email":"chenyu.wei@cloudschools.cn","JobTitle":null,"LoginName":"15811585973","Gender":2,"Status":9,"CardNo":"","OrgId":0,"PhotoFileId":85633,"IsDeleted":false,"PhotoImageUrl":"http://api.apps.cloudschools.cn/api/pubfile/4/avatar/85633","TenantId":4,"Id":781,"Created":"2018-06-15T13:05:23+08:00","Modified":"2020-07-15T14:58:51+08:00"},"Parent":null,"Student":null,"ClientId":"demo-teacher","Menu":"[]","Perm":"{}","Language":"zh"}'
 
   const token =
-    'mFH8I_lrYnqB9xPbW6saZbP9O9QIQjaa5bKrOcQfAxB8eV3Xj0ocvjapzQGvGeePumNMHJ2UxG8so6fZFVlvVM6bNz1QbA9eIAfujlOftB3-Ebq7abOhMQB_L5ol_EPNS-73y3QBRNs80t2c3p0KWHccXlVQWLIOe876wUN3IzSNNmB0CL5lp0xlN_jkyDG9'
+    'mFH8I_lrYnqB9xPbW6saZbP9O9QIQjaa5bKrOcQfAxB8eV3Xj0ocvjapzQGvGeePumNMHJ2UxG8so6fZFVlvVM6bNz1QbA9eIAfujlOftB3-Ebq7abOhMQB_L5ol_EPNwQ344GXQu5Fy6umjL8SfSnUeSIu5NZqgdPfQ-83tnvD-DMVPy5TrM8rfuG8iXgn-'
 
-  sessionStorage.setItem('token', token)
-  sessionStorage.setItem('ctx', ctx)
+  if (!sessionStorage.getItem('ctx')) {
+    sessionStorage.setItem('token', token)
+    sessionStorage.setItem('ctx', ctx)
+  }
 
   if (window.location.href.indexOf('?') < 0) {
     window.location.href = '/index.html?timestamp=' + new Date().getTime()
@@ -25,5 +27,9 @@ if (process.env.NODE_ENV === 'development') {
 if (!sessionStorage.getItem('token')) {
   window.location.href = '/WPOAuth2/SchoolHr-Wp?appCode=CloudSchools'
 }
+
+import store from '@/store'
+store.dispatch('app/toggleToken', sessionStorage.getItem('token'))
+store.dispatch('app/setCtx', JSON.parse(sessionStorage.getItem('ctx')))
 </script>
 <style lang="scss"></style>

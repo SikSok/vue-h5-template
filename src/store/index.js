@@ -15,17 +15,16 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 }, {})
 
 // 获取上下文令牌
-const token = sessionStorage.getItem('token')
-const ctx = JSON.parse(sessionStorage.getItem('ctx'))
-const state = {
-  token: token,
-  ctx: ctx
-}
+// const token = sessionStorage.getItem('token')
+// const ctx = JSON.parse(sessionStorage.getItem('ctx'))
+// const state = {
+//   token: token,
+//   ctx: ctx
+// }
 
 const store = new Vuex.Store({
   modules,
-  getters,
-  state
+  getters
 })
 
 export default store

@@ -81,9 +81,9 @@ export default {
   },
   // 初始化
   mounted() {
-    this.activeName = this.$store.state.app.activeName
-    this.tenantId = this.$store.state.ctx.TenantId
-    this.userId = this.$store.state.ctx.TenantMember.Id
+    this.activeName = this.$store.getters.activeName
+    this.tenantId = this.$store.getters.ctx.TenantId
+    this.userId = this.$store.getters.ctx.TenantMember.Id
     this.init()
   },
   methods: {
@@ -95,13 +95,17 @@ export default {
     init() {
       this.getAxios('/Information/{0}'.format(this.tenantId), { userId: this.userId }).then(res => {
         this.staffInfo = res
-        this.$store.dispatch('app/setStaffId', res.StaffId)
+        // this.$store.dispatch('app/setStaffId', res.StaffId)
+
+        this.$store.getters.ctx.TenantMember.StaffId = res.StaffId
+        sessionStorage.setItem('ctx', JSON.stringify(this.$store.getters.ctx))
+        this.$store.dispatch('app/setCtx', this.$store.getters.ctx)
         this.loading = false
       })
     },
     // 获取某项基础信息
     getInfo(infoType, receiveItem) {
-      var staffId = this.$store.state.app.staffId
+      var staffId = this.$store.getters.ctx.TenantMember.StaffId
       this.getAxios('/Maintenance/{0}/{1}'.format(this.tenantId, infoType), { staffId: staffId }).then(res => {
         this[receiveItem] = res
       })

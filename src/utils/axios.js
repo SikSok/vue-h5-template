@@ -44,7 +44,7 @@ function apiAxios(method, url, params, data) {
     headers: {
       // 配置请求头
       'content-type': 'application/json',
-      Authorization: store.state.token
+      Authorization: store.getters.token
     }
   }
 

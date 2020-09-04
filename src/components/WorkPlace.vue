@@ -47,7 +47,7 @@ export default {
   },
   // 获取工作地点参数
   created() {
-    var tenantId = this.$store.state.ctx.TenantId
+    var tenantId = this.$store.getters.ctx.TenantId
     this.getAxios('/Maintenance/{0}/GetWorkPlaces'.format(tenantId)).then(res => {
       this.columns = []
       res.forEach(element => {

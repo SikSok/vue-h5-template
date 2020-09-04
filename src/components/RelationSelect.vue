@@ -2,7 +2,7 @@
   <div>
     <van-field readonly clickable :label="title" :value="selectItem" placeholder="选择关系" @click="show = true" />
     <van-popup v-model="show" position="bottom">
-      <van-picker title="title" show-toolbar :columns="columns" @confirm="onConfirm" @cancel="onCancel" />
+      <van-picker :title="title" show-toolbar :columns="columns" @confirm="onConfirm" @cancel="onCancel" />
     </van-popup>
   </div>
 </template>

@@ -1,8 +1,7 @@
 <!-- 图片上传组件 -->
 <template>
   <div>
-    <van-field :label="label" style="border-bottom:none"></van-field>
-    <div style="padding-bottom:11px;text-align:center">
+    <div style="padding:40px 0px;text-align:center">
       <van-uploader
         v-model="fileList"
         accept="image/Word/Excel/PPT/Pdf/Txt"

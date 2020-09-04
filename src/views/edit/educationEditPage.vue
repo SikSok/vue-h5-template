@@ -73,6 +73,7 @@ export default {
     },
     // 提交
     onSubmit(values) {
+      values.UserId = this.$store.getters.ctx.TenantMember.Id
       this.postAxios('/WpEducatedHistory/{0}'.format(this.tenantId), {}, this.item).then(res => {
         this.item = res
         this.$router.go(-1)
@@ -87,7 +88,7 @@ export default {
     // 删除数据
     Delete() {
       var _this = this
-      Dialog.alert({
+      Dialog.confirm({
         title: '提示',
         message: '删除确认',
         showCancelButton: true
@@ -107,7 +108,7 @@ export default {
   },
   // 进入页面触发初始化事件
   mounted() {
-    this.tenantId = this.$store.state.ctx.TenantId
+    this.tenantId = this.$store.getters.ctx.TenantId
     if (this.$route.query.title) {
       this.pageTitle = this.$route.query.title
     }
@@ -115,7 +116,7 @@ export default {
     if (this.$route.query.id > 0) {
       this.getData(this.$route.query.id)
     } else {
-      this.item.staffId = this.$store.state.ctx.TenantMember.StaffId
+      this.item.staffId = this.$store.getters.ctx.TenantMember.StaffId
     }
   }
 }
