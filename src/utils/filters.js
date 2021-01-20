@@ -57,7 +57,7 @@ Vue.filter('cstime', function(value) {
   if (!value) {
     return ''
   }
-  return Momont(value).format('YYYY-MM-DD HH:mm')
+  return Momont(value).format('HH:mm')
 })
 
 // 人事相关字典 数据转换

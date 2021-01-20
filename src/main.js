@@ -28,6 +28,8 @@ import '@/utils/function.js'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Vant)
+// 引入css编译器
+import 'less'
 
 new Vue({
   el: '#app',
