@@ -8,8 +8,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// 全局引入按需引入UI库 vant
-import '@/plugins/vant'
 // 引入全局样式
 import '@/assets/css/index.scss'
 // 移动端适配
@@ -26,6 +24,10 @@ import '@/utils/format.js'
 import '@/utils/filters.js'
 // 引入全局事件
 import '@/utils/function.js'
+// 全局引入UI库 vant
+import Vant from 'vant'
+import 'vant/lib/index.css'
+Vue.use(Vant)
 
 new Vue({
   el: '#app',

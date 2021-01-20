@@ -4,13 +4,13 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const resolve = dir => path.join(__dirname, dir)
 // page title
-const name = '员工档案'
+const name = 'CloudSchoolApp'
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 module.exports = {
   publicPath: './', // 署应用包时的基本 URL。 vue-router hash 模式使用
   //  publicPath: '/app/', //署应用包时的基本 URL。  vue-router history模式使用
-  outputDir: 'dist', //  生产环境构建文件的目录
+  outputDir: '../cordova_platform/www', //  生产环境构建文件的目录
   assetsDir: 'static', //  outputDir的静态资源(js、css、img、fonts)目录
   lintOnSave: !IS_PROD,
   productionSourceMap: false, // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
@@ -65,21 +65,6 @@ module.exports = {
       .set('views', resolve('src/views'))
       .set('components', resolve('src/components'))
 
-    /**
-     * 添加CDN参数到htmlWebpackPlugin配置中
-     */
-    // config.plugin('html').tap(args => {
-    //   if (IS_PROD) {
-    //     args[0].cdn = cdn.build
-    //   } else {
-    //     args[0].cdn = cdn.dev
-    //   }
-    //   return args
-    //  })
-
-    /**
-     * 设置保留空格
-     */
     config.module
       .rule('vue')
       .use('vue-loader')
@@ -89,16 +74,6 @@ module.exports = {
         return options
       })
       .end()
-    /**
-     * 打包分析
-     */
-    if (IS_PROD) {
-      config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
-        {
-          analyzerMode: 'static'
-        }
-      ])
-    }
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(!IS_PROD, config => config.devtool('cheap-source-map'))
