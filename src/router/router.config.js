@@ -11,5 +11,14 @@ export const constantRouterMap = [
       title: 'key',
       keepAlive: false
     }
+  },
+  {
+    path: '/signIn',
+    name: 'signIn',
+    component: () => import('@/views/signIn'),
+    meta: {
+      title: '登入',
+      keepAlive: false
+    }
   }
 ]

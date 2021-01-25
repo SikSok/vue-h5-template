@@ -15,3 +15,7 @@ Vue.prototype.getFileUrl = function(tenantId, id) {
     return '{0}/api/PubFile/{1}/Avatar/{2}'.format(openApiUrl, tenantId, id)
   }
 }
+
+/* eslint-disable */
+import startup from 'startup'
+Vue.prototype.$startup = startup

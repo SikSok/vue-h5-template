@@ -28,15 +28,11 @@ axios.interceptors.response.use(
   }
 )
 
-let baseUrl = 'api'
-if (process.env.NODE_ENV === 'development') {
-  baseUrl = 'SchoolHR/api'
-}
 // 封装axios
 function apiAxios(method, url, params, data) {
   const httpDefault = {
     method: method,
-    url: baseUrl + url,
+    url: url,
     params: params, // `params` 是即将与请求一起发送的 URL 参数
     data: JSON.stringify(data), // `data` 是作为请求主体被发送的数据
     timeout: 1000 * 60, // 超时响应

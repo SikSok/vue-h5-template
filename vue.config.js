@@ -10,7 +10,7 @@ const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 module.exports = {
   publicPath: './', // 署应用包时的基本 URL。 vue-router hash 模式使用
   //  publicPath: '/app/', //署应用包时的基本 URL。  vue-router history模式使用
-  outputDir: '../cordova_platform/www', //  生产环境构建文件的目录
+  outputDir: '../app/www', //  生产环境构建文件的目录
   assetsDir: 'static', //  outputDir的静态资源(js、css、img、fonts)目录
   lintOnSave: !IS_PROD,
   productionSourceMap: false, // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
@@ -24,7 +24,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-        target: 'http://localhost:51849',
+        target: 'http://localhost:50000',
         changOrigin: true
       }
     }
@@ -51,9 +51,24 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
+    // 配置js文件代理
+    externals: {
+      startup: 'startup'
+    }
   },
   chainWebpack: config => {
+    const svgRule = config.module.rule('svg')
+    // 清除已有的所有 loader,如果你不这样做，接下来的 loader 会附加在该规则现有的 loader 之后。
+    svgRule.uses.clear()
+    // 添加要替换的 loader
+    svgRule
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 

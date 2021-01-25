@@ -1,25 +1,26 @@
 <!-- 个人档案首页 -->
 <template>
-  <div class="body">
+  <div class="body" id="deviceready">
     <div class="header">
-      <van-row gutter="20">
-        <van-col span="10">
-          <img class="img" src="@/assets/headPic.png" alt="" />
+      <svg-icon icon-class="message" class="svg-left" />
+      <svg-icon icon-class="setting" class="svg-right" />
+      <div class="content">
+        <label class="label">正常</label>
+        <br />
+        <label class="temperture">36.7 摄氏度</label>
+      </div>
+    </div>
+    <div class="current-info">
+      <van-row>
+        <van-col span="8">
+          <img class="headerPic" src="@/assets/headPic.png" />
         </van-col>
-        <van-col span="12">
-          <p class="p-Name">赵宇阳</p>
-          <p class="p-Label">可爱二班</p>
-          <p class="p-Label">体温：16.7℃</p>
+        <van-col span="16">
+          <p class="p-name">池舒菡 . 国际大一班</p>
+          <p class="p-no">NO . 241324212513</p>
+          <p class="p-no">{{ cordovaobj }}</p>
         </van-col>
       </van-row>
-    </div>
-    <div class="hr"></div>
-    <div class="list">
-      <van-cell v-for="item in items" :key="item.Id" is-link>
-        <template #title>
-          <span class="custom-title">{{ item.Name }} （{{ item.temperture }}） {{ item.date | cstime }}</span>
-        </template>
-      </van-cell>
     </div>
   </div>
 </template>
@@ -30,40 +31,94 @@ export default {
   components: {},
   data() {
     return {
-      items: [
-        { Name: '赵宇阳', Id: 1, temperture: 26.8, date: new Date() },
-        { Name: '黄小米', Id: 2, temperture: 25.8, date: new Date() },
-        { Name: '徐凤年', Id: 3, temperture: 26.2, date: new Date() },
-        { Name: '陈平安', Id: 4, temperture: 24.8, date: new Date() },
-        { Name: '徐晓', Id: 5, temperture: 26.8, date: new Date() },
-        { Name: '羌矢', Id: 6, temperture: 25.8, date: new Date() }
-      ]
+      Users: [],
+      currentUser: {},
+      cordovaobj: {}
     }
+  },
+  methods: {
+    init() {
+      // this.$startup.initialize()
+      this.cordovaobj = this.$startup
+    }
+  },
+  mounted() {
+    this.init()
+
+    // 检测设备是否注册
+    this.getAxios('api/Temperature', { SN: this.$startup.sn }).then(res => {
+      if (res.tenantId > 0) {
+        this.$store.dispatch('setCommonData', res)
+        this.Users = res.users
+        this.currentUser = res.users[0]
+        this.init()
+      } else {
+        this.$router.push({ path: '/signIn' })
+      }
+    })
   }
 }
 </script>
 <style lang="less" scoped>
 .body {
-  background: rgba(255, 255, 255, 0.904);
+  background-image: url('../assets/iData_app_background.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
   height: 100vh;
   width: 100vw;
 }
 .header {
-  padding: 15px;
-  .img {
-    width: 100%;
-    border-radius: 10px;
+  height: 65vh;
+  overflow: hidden;
+  padding-top: 15px;
+  .svg-left {
+    font-size: 40px;
+    float: left;
+    margin-left: 15px;
   }
-  .p-Name {
-    font-size: 16px;
+  .svg-right {
+    font-size: 40px;
+    float: right;
+    margin-right: 15px;
   }
-  .p-Label {
-    font-size: 14px;
+  .content {
+    margin: 10vw 9vw;
+    border: 10px solid white;
+    border-radius: 100%;
+    width: 80vw;
+    height: 80vw;
+    text-align: center;
+    line-height: 70px;
+    .label {
+      font-size: 14px;
+      text-align: center;
+      background-color: #0cb312;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+    }
+    .temperture {
+      font-size: 40px;
+      color: white;
+    }
   }
 }
-.hr {
-  width: 100vw;
-  height: 10px;
-  background-color: rgba(0, 0, 0, 0.055);
+.current-info {
+  height: 35vh;
+  background-color: white;
+  .headerPic {
+    border-radius: 100%;
+    padding: 15px;
+    width: 100px;
+  }
+  .p-name {
+    font-size: 17px;
+    text-align: center;
+  }
+  .p-no {
+    font-size: 13px;
+    text-align: center;
+  }
 }
 </style>
