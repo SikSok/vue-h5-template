@@ -22,15 +22,15 @@ module.exports = {
       errors: true
     },
     proxy: {
-      //配置跨域
+      // 配置跨域
       '/api': {
-        target: 'http://localhost:50000',
+        target: 'http://callback.apps.cloudschools.cn',
         changOrigin: true
       }
     }
   },
   css: {
-    extract: IS_PROD, //是否将组件中的 CSS 提取至一个独立的 CSS 文件中 (而不是动态注入到 JavaScript 中的 inline 代码)。
+    extract: IS_PROD, // 是否将组件中的 CSS 提取至一个独立的 CSS 文件中 (而不是动态注入到 JavaScript 中的 inline 代码)。
     sourceMap: false,
     loaderOptions: {
       scss: {
@@ -69,8 +69,8 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
 
-    config.plugins.delete('preload') // TODO: need test
-    config.plugins.delete('prefetch') // TODO: need test
+    config.plugins.delete('preload')
+    config.plugins.delete('prefetch')
 
     // 别名 alias
     config.resolve.alias

@@ -30,6 +30,9 @@ axios.interceptors.response.use(
 
 // 封装axios
 function apiAxios(method, url, params, data) {
+  if (process.env.NODE_ENV !== 'development') {
+    url = 'http://callback.apps.cloudschools.cn/' + url
+  }
   const httpDefault = {
     method: method,
     url: url,

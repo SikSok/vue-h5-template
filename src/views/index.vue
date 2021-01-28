@@ -1,124 +1,114 @@
-<!-- 个人档案首页 -->
+<!-- 场景选择页 -->
 <template>
-  <div class="body" id="deviceready">
-    <div class="header">
-      <svg-icon icon-class="message" class="svg-left" />
-      <svg-icon icon-class="setting" class="svg-right" />
-      <div class="content">
-        <label class="label">正常</label>
+  <div class="content">
+    <div class="logo">
+      <img src="@/assets/logo.png" alt="" />
+    </div>
+    <div class="appName">
+      常青云幼儿晨检/接送应用
+    </div>
+    <van-row v-show="!initStatus">
+      <p class="label-getdata">获取数据中...</p>
+    </van-row>
+    <div class="label" v-show="initStatus">
+      请选择使用场景：
+    </div>
+    <van-row v-show="initStatus">
+      <van-col span="10" offset="2" @click="turnTo('temperture')">
+        <svg-icon icon-class="check" class="svg-icon" />
         <br />
-        <label class="temperture">36.7 摄氏度</label>
-      </div>
-    </div>
-    <div class="current-info">
-      <van-row>
-        <van-col span="8">
-          <img class="headerPic" src="@/assets/headPic.png" />
-        </van-col>
-        <van-col span="16">
-          <p class="p-name">池舒菡 . 国际大一班</p>
-          <p class="p-no">NO . 241324212513</p>
-          <p class="p-no">{{ cordovaobj }}</p>
-        </van-col>
-      </van-row>
-    </div>
+        <span class="label2">晨检/测温</span>
+      </van-col>
+      <van-col span="10" @click="turnTo('pickup')">
+        <svg-icon icon-class="relation" class="svg-icon" />
+        <br />
+        <span class="label2">家长接送</span>
+      </van-col>
+    </van-row>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: '',
   components: {},
   data() {
     return {
-      Users: [],
-      currentUser: {},
-      cordovaobj: {}
+      tenantName: '',
+      imgUrl: '',
+      initStatus: false
     }
   },
   methods: {
-    init() {
-      // this.$startup.initialize()
-      this.cordovaobj = this.$startup
+    turnTo(page) {
+      this.$router.push({ path: page })
     }
   },
   mounted() {
-    this.init()
-
-    // 检测设备是否注册
-    this.getAxios('api/Temperature', { SN: this.$startup.sn }).then(res => {
-      if (res.tenantId > 0) {
-        this.$store.dispatch('setCommonData', res)
-        this.Users = res.users
-        this.currentUser = res.users[0]
-        this.init()
-      } else {
-        this.$router.push({ path: '/signIn' })
-      }
-    })
+    this.$startup.initialize()
+    console.log(this.$startup)
+    if (this.$store.getters.commonData === null) {
+      // 检测设备是否注册
+      this.getAxios('api/Temperature', { SN: this.$startup.sn }).then(res => {
+        if (res.tenantId > 0) {
+          this.initStatus = true
+          this.$store.dispatch('app/setCommonData', res)
+          this.tenantName = res.tenantName
+          this.imgUrl = this.getFileUrl(res.tenantId, res.tenantImageId)
+          // 缓存在session一份 调试时获取
+          sessionStorage.setItem('commonData', JSON.stringify(res))
+        } else {
+          this.$router.push({ path: '/signIn' })
+        }
+      })
+    } else {
+      this.initStatus = true
+    }
   }
 }
 </script>
 <style lang="less" scoped>
-.body {
-  background-image: url('../assets/iData_app_background.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  height: 100vh;
-  width: 100vw;
+/*@import url(); 引入公共css类*/
+.content {
+  text-align: center;
+  letter-spacing: 2px;
 }
-.header {
-  height: 65vh;
-  overflow: hidden;
-  padding-top: 15px;
-  .svg-left {
-    font-size: 40px;
-    float: left;
-    margin-left: 15px;
-  }
-  .svg-right {
-    font-size: 40px;
-    float: right;
-    margin-right: 15px;
-  }
-  .content {
-    margin: 10vw 9vw;
-    border: 10px solid white;
-    border-radius: 100%;
-    width: 80vw;
-    height: 80vw;
-    text-align: center;
-    line-height: 70px;
-    .label {
-      font-size: 14px;
-      text-align: center;
-      background-color: #0cb312;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      border: none;
-    }
-    .temperture {
-      font-size: 40px;
-      color: white;
-    }
+.logo {
+  margin-top: 20px;
+  width: 150px;
+  margin-left: 70px;
+  img {
+    width: 100%;
+    height: 100%;
   }
 }
-.current-info {
-  height: 35vh;
-  background-color: white;
-  .headerPic {
-    border-radius: 100%;
-    padding: 15px;
-    width: 100px;
-  }
-  .p-name {
-    font-size: 17px;
-    text-align: center;
-  }
-  .p-no {
-    font-size: 13px;
-    text-align: center;
-  }
+.appName {
+  font-size: 18px;
+  color: white;
+  white-space: nowrap;
+  line-height: 50px;
+}
+.label {
+  font-size: 16px;
+  color: white;
+  line-height: 40px;
+  margin: 40px 0px 15px;
+}
+.svg-icon {
+  font-size: 40px;
+  border: 3px solid white;
+  border-radius: 50%;
+  padding: 15px;
+}
+.label2 {
+  color: white;
+  font-size: 14px;
+  line-height: 30px;
+}
+.label-getdata {
+  line-height: 100px;
+  color: white;
+  font-size: 25px;
+  margin-top: 50px;
 }
 </style>

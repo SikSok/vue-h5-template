@@ -4,13 +4,11 @@
     <div class="img-div">
       <img src="../assets/logo.png" alt="" />
     </div>
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" class="form">
       <van-field v-model="registModel.TenantCode" label="账号" placeholder="账号" :rules="rules.TenantCode" />
       <van-field v-model="registModel.Password" label="密码" placeholder="密码" :rules="rules.Password"> </van-field>
-      <div style="margin:16px;">
-        <van-button round block type="info" native-type="submit">
-          登录
-        </van-button>
+      <div class="login-in-row">
+        <van-icon name="passed" class="login-in" @click="onSubmit" />
       </div>
     </van-form>
   </div>
@@ -47,7 +45,7 @@ export default {
   methods: {
     // 注册
     onSubmit(values) {
-      this.postAxios('api/Temperature/regist?SN={0}'.format(this.$cordova.sn), {}, this.registModel).then(res => {
+      this.postAxios('api/Temperature/regist?SN={0}'.format(this.$startup.sn), {}, this.registModel).then(res => {
         if (res.tenantId > 0) {
           this.$router.push({ path: '/' })
         } else {
@@ -61,10 +59,26 @@ export default {
 <style lang="less" scoped>
 /*@import url(); 引入公共css类*/
 .loginPage {
-  background: white;
+  .form {
+    width: 80vw;
+    margin-left: 10vw;
+    border-radius: 10px;
+  }
   .img-div {
     text-align: center;
-    padding: 20vh 1vw 10vh;
+    padding: 40px 1vw 10vh;
+  }
+  .login-in-row {
+    margin-top: 30px;
+    text-align: center;
+  }
+  .login-in {
+    font-size: 40px;
+    background-color: white;
+    border-radius: 50%;
+    border: none;
+    padding: 15px;
+    color: yellowgreen;
   }
 }
 </style>

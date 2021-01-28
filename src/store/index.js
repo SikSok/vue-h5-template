@@ -14,14 +14,6 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   return modules
 }, {})
 
-// 获取上下文令牌
-// const token = sessionStorage.getItem('token')
-// const ctx = JSON.parse(sessionStorage.getItem('ctx'))
-// const state = {
-//   token: token,
-//   ctx: ctx
-// }
-
 const store = new Vuex.Store({
   modules,
   getters

@@ -1,7 +1,6 @@
 // 全局过滤器
 import Vue from 'vue'
 import Momont from 'moment'
-import Parameter from './parameters'
 
 // 判断信息元素是否填写 已填写则返回填写值，否则返回提示信息字符串
 Vue.filter('complete', function(value) {
@@ -60,21 +59,10 @@ Vue.filter('cstime', function(value) {
   return Momont(value).format('HH:mm')
 })
 
-// 人事相关字典 数据转换
-Vue.filter('translateParameter', function(value, code) {
-  if (value === '' || value === null) {
+// 在卡号前加个NO .
+Vue.filter('cardNoStr', function(value) {
+  if (!value) {
     return ''
   }
-  const args = code.split('.')
-  var dict = Parameter[args[0]][args[1]]
-  if (!dict) {
-    return ''
-  }
-  for (let i = 0; i < dict.Items.length; i++) {
-    const item = dict.Items[i]
-    if (item.Value === value) {
-      return item.Label
-    }
-  }
-  return ''
+  return 'NO . {0}'.format(value)
 })
