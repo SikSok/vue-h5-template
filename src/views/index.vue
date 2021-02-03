@@ -25,44 +25,99 @@
         <span class="label2">家长接送</span>
       </van-col>
     </van-row>
+    <offline-dialog ref="offline_dialog" @init="init" />
   </div>
 </template>
 
 <script>
+import OfflineDialog from './components/offlineDialog.vue'
 export default {
   name: '',
-  components: {},
+  components: { OfflineDialog },
   data() {
     return {
-      tenantName: '',
-      imgUrl: '',
       initStatus: false
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    // 初始化
+    init() {
+      // 使用插件获取机器sn号
+      this.$startup.initialize()
+      // 如果没有上下文就从服务器或浏览器数据库获取获取
+      if (this.$store.getters.commonData === null) {
+        this.getCommonData()
+      } else {
+        this.initStatus = true
+      }
+    },
+    // 获取上下文
+    getCommonData() {
+      var offline = this.g_getoffline()
+      if (offline) {
+        // 离线状态 从浏览器数据库获取
+        this.g_idataDb
+          .get('ctx')
+          .then(res => {
+            this.$store.dispatch('app/setCommonData', res)
+            // 缓存session以便调试获取
+            sessionStorage.setItem('commonData', JSON.stringify(res))
+            this.initStatus = true
+          })
+          .catch(() => {
+            this.$startup.toast('获取上下文失败，请联网后初始化')
+            this.$router.push({ path: '/signIn' })
+            this.$store.dispatch('app/setOffline', false)
+          })
+      } else {
+        // 联网状态 从服务器获取上下文
+        this.g_fetchCtx(res => {
+          switch (res) {
+            case 1: // 成功
+              this.initStatus = true
+              // 上下文缓存至浏览器数据库
+              this.g_cacheCtx(this.$store.getters.commonData)
+              break
+            case 2: // 失败
+              this.$refs.offline_dialog.show = true
+              break
+            case 3: // 未认证
+              this.$router.push({ path: '/signIn' })
+              break
+          }
+        })
+      }
+    },
+    // 缓存上下文前检查 已有更新，没有则创建
+    saveCTX(ctx) {
+      ctx._id = 'ctx'
+      this.g_idataDb
+        .get('ctx')
+        .then(res => {
+          ctx._rev = res._rev
+          this.putCTX(ctx)
+        })
+        .catch(() => {
+          this.putCTX(ctx)
+        })
+    },
+    // 缓存上下文
+    putCTX(ctx) {
+      this.g_idataDb
+        .put(ctx)
+        .then(response => {
+          console.log('缓存最新上下文成功')
+        })
+        .catch(err => {
+          console.log('缓存最新上下文失败，{0}'.format(err))
+        })
+    },
+    // 页面跳转
     turnTo(page) {
       this.$router.push({ path: page })
-    }
-  },
-  mounted() {
-    this.$startup.initialize()
-    console.log(this.$startup)
-    if (this.$store.getters.commonData === null) {
-      // 检测设备是否注册
-      this.getAxios('api/Temperature', { SN: this.$startup.sn }).then(res => {
-        if (res.tenantId > 0) {
-          this.initStatus = true
-          this.$store.dispatch('app/setCommonData', res)
-          this.tenantName = res.tenantName
-          this.imgUrl = this.getFileUrl(res.tenantId, res.tenantImageId)
-          // 缓存在session一份 调试时获取
-          sessionStorage.setItem('commonData', JSON.stringify(res))
-        } else {
-          this.$router.push({ path: '/signIn' })
-        }
-      })
-    } else {
-      this.initStatus = true
     }
   }
 }

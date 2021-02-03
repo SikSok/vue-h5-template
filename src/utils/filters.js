@@ -62,7 +62,21 @@ Vue.filter('cstime', function(value) {
 // 在卡号前加个NO .
 Vue.filter('cardNoStr', function(value) {
   if (!value) {
-    return ''
+    return '-'
   }
   return 'NO . {0}'.format(value)
+})
+// 班级名前加 .
+Vue.filter('classNameStr', function(value) {
+  if (!value) {
+    return '-'
+  }
+  return ' . {0}'.format(value)
+})
+// 测温过滤
+Vue.filter('temperatureStr', function(value) {
+  if (!value || value === 0) {
+    return '-'
+  }
+  return value
 })

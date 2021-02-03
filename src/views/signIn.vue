@@ -45,13 +45,17 @@ export default {
   methods: {
     // 注册
     onSubmit(values) {
-      this.postAxios('api/Temperature/regist?SN={0}'.format(this.$startup.sn), {}, this.registModel).then(res => {
-        if (res.tenantId > 0) {
-          this.$router.push({ path: '/' })
-        } else {
-          Toast('无效账户')
-        }
-      })
+      this.postAxios('api/Temperature/regist?SN={0}'.format(this.$startup.sn), {}, this.registModel)
+        .then(res => {
+          if (res.tenantId > 0) {
+            this.$router.push({ path: '/' })
+          } else {
+            this.$startup.toast('无效账户')
+          }
+        })
+        .catch(() => {
+          this.$startup.toast('请确认网络是否已连接')
+        })
     }
   }
 }

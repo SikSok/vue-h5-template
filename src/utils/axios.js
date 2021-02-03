@@ -1,7 +1,7 @@
 // axios封装文件，定义全局API接口格式，在main.js中调用执行
 
 import axios from 'axios'
-import { Toast } from 'vant'
+// import { Toast } from 'vant'
 import store from '../store'
 
 // 添加请求拦截器，在发送请求之前做些什么
@@ -38,7 +38,7 @@ function apiAxios(method, url, params, data) {
     url: url,
     params: params, // `params` 是即将与请求一起发送的 URL 参数
     data: JSON.stringify(data), // `data` 是作为请求主体被发送的数据
-    timeout: 1000 * 60, // 超时响应
+    timeout: 1000 * 6, // 超时响应
     withCredentials: false, // axios 默认不发送cookie，需要全局设置true发送cookie
     headers: {
       // 配置请求头
@@ -75,7 +75,7 @@ function apiAxios(method, url, params, data) {
           message = error.message
         }
 
-        Toast(message)
+        // Toast(message)
         reject(message)
       })
   })
