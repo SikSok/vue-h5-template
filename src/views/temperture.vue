@@ -1,9 +1,8 @@
 <!-- 个人档案首页 -->
 <template>
   <div class="temperature-page">
-    <svg-icon icon-class="message" class="svg-left" />
-    <van-button @click="testTemperature" style="float:left">测温</van-button>
-    <van-button @click="testNFC" style="float:left">读卡</van-button>
+    <van-icon name="replay" class="svg-left" @click="refreach()" />
+    <!-- <van-button @click="testTemperature" style="float:left">测温</van-button> -->
     <svg-icon icon-class="setting" @click.native="turnTo('setting')" class="svg-right" />
     <div class="content">
       <label :class="status == 1 ? 'status-label normal' : 'status-label abnormal'">
@@ -21,20 +20,18 @@
           />
         </van-col>
         <van-col span="16">
-          <div class="p-name">{{ currentUser.name }}{{ currentUser.title | classNameStr }}</div>
-          <div class="p-no">{{ currentUser.cardNo | cardNoStr }}</div>
+          <div class="p-name">姓名：{{ currentUser.name | nameStr }}</div>
+          <div class="p-name">班级：{{ currentUser.title | classNameStr }}</div>
+          <div class="p-name">NO : {{ currentUser.cardNo | cardNoStr }}</div>
         </van-col>
       </van-row>
     </div>
-    <offline-dialog ref="offline_dialog" @init="uploadData" />
   </div>
 </template>
 
 <script>
-import OfflineDialog from './components/offlineDialog.vue'
 export default {
   name: 'Home',
-  components: { OfflineDialog },
   data() {
     return {
       Users: [],
@@ -47,6 +44,20 @@ export default {
     }
   },
   methods: {
+    // 刷新
+    refreach() {
+      this.g_fetchCtx(res => {
+        switch (res) {
+          case 1: // 成功
+            // 上下文缓存至浏览器数据库
+            this.g_cacheCtx(this.$store.getters.commonData)
+            break
+          case 2: // 失败
+            this.$startup.toast('同步失败')
+            break
+        }
+      })
+    },
     // 模拟测温
     testTemperature() {
       this.temperatureCallBack('36.5')
@@ -82,11 +93,11 @@ export default {
                   console.log('测温缓存数据上传失败')
                 })
               this.g_idataDb.remove(model)
-              if (res.docs.length > 0) {
-                setTimeout(this.uploadCacheData(), 100)
-              } else {
-                setTimeout(this.uploadCacheData(), 60000)
-              }
+            }
+            if (res.docs.length > 0) {
+              setTimeout(this.uploadCacheData, 1000)
+            } else {
+              setTimeout(this.uploadCacheData, 60000)
             }
           })
           .catch(err => {
@@ -105,7 +116,6 @@ export default {
         .catch(err => {
           console.log('离线缓存刷新数据失败:{0}'.format(err))
         })
-      this.temperture = 0
     },
     // nfc监听函数的回调函数
     nfcCallBack(res) {
@@ -122,6 +132,7 @@ export default {
       } else if (this.model != null && this.model.CardNo === this.currentUser.cardNo) {
         this.$startup.toast('不能二次上传同一卡号数据')
       } else {
+        this.$startup.read(this.currentUser.name)
         this.model = this.g_creatModel(this.currentUser, this.temperture)
         this.cacheData()
       }
@@ -136,6 +147,7 @@ export default {
             this.currentUser = {
               avatarUrl: ''
             }
+            this.temperture = 0
           }
         }
       }, 5000)
@@ -183,6 +195,7 @@ export default {
     font-size: 30px;
     float: left;
     margin-left: 15px;
+    color: white;
   }
   .svg-right {
     font-size: 30px;
@@ -219,7 +232,7 @@ export default {
     }
   }
   .info-box {
-    height: 110px;
+    height: 120px;
     position: absolute;
     bottom: 0px;
     width: 100%;
@@ -234,7 +247,7 @@ export default {
     }
     .p-name {
       font-size: 17px;
-      line-height: 40px;
+      line-height: 35px;
       margin-bottom: -15px;
       white-space: nowrap;
       overflow: hidden;

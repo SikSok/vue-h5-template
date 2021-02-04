@@ -10,10 +10,15 @@
     </van-nav-bar>
     <van-cell title="离线" size="large">
       <template #default>
-        <van-switch v-model="offline" />
+        <van-switch size="20px" v-model="offline" />
       </template>
     </van-cell>
     <van-cell title="切换使用场景" size="large" is-link @click="turnTo('/')" />
+    <van-cell title="缓存数据" size="large">
+      <template #default>
+        {{ updateTime | cstime }}
+      </template>
+    </van-cell>
     <van-cell title="版本号" value="最新" size="large" label="V 1.0.0" />
     <van-cell size="large" @click="turnTo('signIn')">
       <template #title>
@@ -31,7 +36,8 @@ export default {
   components: {},
   data() {
     return {
-      offline: false
+      offline: false,
+      updateTime: null
     }
   },
   methods: {
@@ -43,6 +49,7 @@ export default {
     },
     init() {
       this.offline = this.g_getoffline()
+      this.updateTime = this.$store.getters.commonData.updateTime
     }
   },
   mounted() {

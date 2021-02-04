@@ -54,7 +54,8 @@ module.exports = {
     devtool: 'source-map',
     // 配置js文件代理
     externals: {
-      startup: 'startup'
+      startup: 'startup',
+      developmentStartup: 'developmentStartup'
     }
   },
   chainWebpack: config => {

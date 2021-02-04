@@ -2,7 +2,13 @@ import Vue from 'vue'
 
 /* eslint-disable */
 import startup from 'startup'
-Vue.prototype.$startup = startup
+import developmentStartup from 'developmentStartup'
+
+if (process.env.NODE_ENV === 'development') {
+  Vue.prototype.$startup = developmentStartup
+} else {
+  Vue.prototype.$startup = startup
+}
 
 // 浏览器内置数据库
 import PouchDB from 'pouchdb'
@@ -93,6 +99,7 @@ Vue.prototype.g_fetchCtx = function(callback) {
   this.getAxios('api/Temperature', { SN: this.$startup.sn })
     .then(res => {
       if (res.tenantId > 0) {
+        res.updateTime = new Date()
         this.$store.dispatch('app/setCommonData', res)
         // 缓存session以便调试获取
         sessionStorage.setItem('commonData', JSON.stringify(res))

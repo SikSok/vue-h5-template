@@ -56,7 +56,14 @@ Vue.filter('cstime', function(value) {
   if (!value) {
     return ''
   }
-  return Momont(value).format('HH:mm')
+  return Momont(value).format('MM-DD HH:mm')
+})
+
+Vue.filter('nameStr', function(value) {
+  if (!value) {
+    return '-'
+  }
+  return value
 })
 
 // 在卡号前加个NO .
@@ -64,14 +71,14 @@ Vue.filter('cardNoStr', function(value) {
   if (!value) {
     return '-'
   }
-  return 'NO . {0}'.format(value)
+  return value
 })
 // 班级名前加 .
 Vue.filter('classNameStr', function(value) {
   if (!value) {
     return '-'
   }
-  return ' . {0}'.format(value)
+  return value
 })
 // 测温过滤
 Vue.filter('temperatureStr', function(value) {
