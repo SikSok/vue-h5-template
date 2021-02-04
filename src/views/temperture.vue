@@ -69,7 +69,7 @@ export default {
         this.g_idataDb
           .find({
             selector: { type: 'cache' },
-            limit: 2
+            limit: 10
           })
           .then(res => {
             for (var i = 0; i < res.docs.length; i++) {
@@ -83,9 +83,9 @@ export default {
                 })
               this.g_idataDb.remove(model)
               if (res.docs.length > 0) {
-                setTimeout(this.uploadCacheData(), 20000)
+                setTimeout(this.uploadCacheData(), 100)
               } else {
-                setTimeout(this.uploadCacheData(), 600000)
+                setTimeout(this.uploadCacheData(), 60000)
               }
             }
           })
@@ -94,30 +94,17 @@ export default {
           })
       }
     },
-    // 上传刷卡数据
-    uploadData() {
-      var offline = this.g_getoffline()
-      // 离线缓存本地 否则直接上传
-      if (offline) {
-        this.model.type = 'cache'
-        this.g_idataDb
-          .post(this.model)
-          .then(response => {
-            console.log('刷卡离线缓存成功:{0}'.format(response))
-          })
-          .catch(err => {
-            console.log('离线缓存刷新数据失败:{0}'.format(err))
-          })
-      } else {
-        this.postAxios('api/Temperature?SN={0}'.format(this.$startup.sn), {}, this.model)
-          .then(res => {
-            this.$startup.toast('{0}测温数据已上传'.format(this.currentUser.name))
-          })
-          .catch(err => {
-            console.log('访问服务器接口失败，原因:{0}'.format(err))
-            this.$refs.offline_dialog.show = true
-          })
-      }
+    // 刷卡数据缓存浏览器数据库
+    cacheData() {
+      this.model.type = 'cache'
+      this.g_idataDb
+        .post(this.model)
+        .then(response => {
+          console.log('刷卡离线缓存成功:{0}'.format(response))
+        })
+        .catch(err => {
+          console.log('离线缓存刷新数据失败:{0}'.format(err))
+        })
       this.temperture = 0
     },
     // nfc监听函数的回调函数
@@ -136,8 +123,22 @@ export default {
         this.$startup.toast('不能二次上传同一卡号数据')
       } else {
         this.model = this.g_creatModel(this.currentUser, this.temperture)
-        this.uploadData()
+        this.cacheData()
       }
+    },
+    // 定时清理
+    clearCurrentUser() {
+      setInterval(() => {
+        if (this.model) {
+          var nowTime = new Date()
+          var second = nowTime.getSeconds() - this.model.Time.getSeconds()
+          if (second >= 5) {
+            this.currentUser = {
+              avatarUrl: ''
+            }
+          }
+        }
+      }, 5000)
     },
     // 测温监听函数回调
     temperatureCallBack(res) {
@@ -154,6 +155,7 @@ export default {
   mounted() {
     this.init()
     this.uploadCacheData()
+    this.clearCurrentUser()
   },
   watch: {
     // 温度是否异常
