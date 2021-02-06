@@ -232,7 +232,7 @@ export default {
     }
     .p-name {
       font-size: 17px;
-      line-height: 40px;
+      line-height: 35px;
       margin-bottom: -15px;
       white-space: nowrap;
       overflow: hidden;

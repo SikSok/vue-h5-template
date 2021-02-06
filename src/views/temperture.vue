@@ -2,7 +2,7 @@
 <template>
   <div class="temperature-page">
     <van-icon name="replay" class="svg-left" @click="refreach()" />
-    <!-- <van-button @click="testNFC" style="float:left">测温</van-button> -->
+    <van-button @click="testNFC" style="float:left">测温</van-button>
     <svg-icon icon-class="setting" @click.native="turnTo('setting')" class="svg-right" />
     <div class="content">
       <label :class="status == 1 ? 'status-label normal' : 'status-label abnormal'">

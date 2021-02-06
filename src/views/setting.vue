@@ -19,7 +19,7 @@
         {{ updateTime | cstime }}
       </template>
     </van-cell>
-    <van-cell title="版本号" value="最新" size="large" label="V 1.0.0" />
+    <van-cell title="版本号" value="最新" size="large" label="V 1.1.0" />
     <van-cell size="large" @click="turnTo('signIn')">
       <template #title>
         <div class="center">
