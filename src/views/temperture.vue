@@ -2,7 +2,7 @@
 <template>
   <div class="temperature-page">
     <van-icon name="replay" class="svg-left" @click="refreach()" />
-    <!-- <van-button @click="testTemperature" style="float:left">测温</van-button> -->
+    <!-- <van-button @click="testNFC" style="float:left">测温</van-button> -->
     <svg-icon icon-class="setting" @click.native="turnTo('setting')" class="svg-right" />
     <div class="content">
       <label :class="status == 1 ? 'status-label normal' : 'status-label abnormal'">
@@ -76,11 +76,12 @@ export default {
     // 上传缓存刷卡数据 (定时任务)
     uploadCacheData() {
       var offline = this.g_getoffline()
+      var _this = this
       if (!offline) {
         this.g_idataDb
           .find({
             selector: { type: 'cache' },
-            limit: 10
+            limit: 1
           })
           .then(res => {
             for (var i = 0; i < res.docs.length; i++) {
@@ -88,16 +89,16 @@ export default {
               this.postAxios('api/Temperature?SN={0}'.format(this.$startup.sn), {}, model)
                 .then(res => {
                   console.log('测温缓存数据已上传')
+                  _this.g_idataDb.remove(model)
                 })
-                .catch(() => {
-                  console.log('测温缓存数据上传失败')
+                .catch(err => {
+                  console.log(`测温缓存数据上传失败${err}`)
                 })
-              this.g_idataDb.remove(model)
             }
             if (res.docs.length > 0) {
               setTimeout(this.uploadCacheData, 1000)
             } else {
-              setTimeout(this.uploadCacheData, 60000)
+              setTimeout(this.uploadCacheData, 6000)
             }
           })
           .catch(err => {
@@ -232,7 +233,7 @@ export default {
     }
   }
   .info-box {
-    height: 120px;
+    height: 125px;
     position: absolute;
     bottom: 0px;
     width: 100%;

@@ -69,11 +69,12 @@ export default {
     // 上传缓存刷卡数据 (定时任务)
     uploadCacheData() {
       var offline = this.g_getoffline()
+      var _this = this
       if (!offline) {
         this.g_idataDb
           .find({
             selector: { type: 'cache' },
-            limit: 2
+            limit: 1
           })
           .then(res => {
             for (var i = 0; i < res.docs.length; i++) {
@@ -81,16 +82,16 @@ export default {
               this.postAxios('api/Temperature?SN={0}'.format(this.$startup.sn), {}, model)
                 .then(res => {
                   console.log('测温缓存数据已上传')
+                  _this.g_idataDb.remove(model)
                 })
                 .catch(() => {
                   console.log('测温缓存数据上传失败')
                 })
-              this.g_idataDb.remove(model)
             }
             if (res.docs.length > 0) {
               setTimeout(this.uploadCacheData, 1000)
             } else {
-              setTimeout(this.uploadCacheData, 60000)
+              setTimeout(this.uploadCacheData, 6000)
             }
           })
           .catch(err => {
@@ -216,7 +217,7 @@ export default {
     }
   }
   .info-box {
-    height: 120px;
+    height: 125px;
     position: absolute;
     bottom: 0px;
     width: 100%;

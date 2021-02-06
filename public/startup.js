@@ -39,8 +39,9 @@ var developmentStartup = {
 // 安卓
 var startup = {
   sn: 'test',
+  listenNfc: false,
 
-  // 初始化 建立桥接
+  // 初始化 建立机器事件监听
   initialize: function() {
     startup.sn = device.uuid
   },
@@ -50,11 +51,14 @@ var startup = {
     if (typeof nfc === 'undefined') {
       window.plugins.toast.showShortTop('nfc未启动')
     } else {
-      nfc.addTagDiscoveredListener(
-        getCardNo,
-        function() {},
-        function() {}
-      )
+      if (!this.listenNfc) {
+        nfc.addTagDiscoveredListener(
+          getCardNo,
+          function() {},
+          function() {}
+        )
+        this.listenNfc = true
+      }
     }
     function getCardNo(nfcEvent) {
       var tag = nfcEvent.tag
