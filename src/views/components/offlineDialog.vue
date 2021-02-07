@@ -26,12 +26,18 @@ export default {
   methods: {
     // 转离线状态
     confirm() {
-      this.$store.dispatch('app/setOffline', true)
-      if (process.env.NODE_ENV === 'development') {
-        sessionStorage.setItem('offline', true)
-      }
-      this.$emit('init')
-      this.show = false
+      this.g_setOffline(true)
+      /* 判断是否初始化 有上下文代表初始化过了*/
+      this.g_idataDb
+        .get('ctx')
+        .then(res => {
+          this.$emit('init')
+          this.show = false
+        })
+        .catch(() => {
+          this.$startup.toast('未初始化')
+          this.$router.push({ path: '/signIn' })
+        })
     },
     // 重新尝试
     cancel() {

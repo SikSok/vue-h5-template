@@ -3,41 +3,47 @@
   <div class="temperature-page">
     <van-icon name="replay" class="svg-left" @click="refreach()" />
     <svg-icon icon-class="setting" @click.native="turnTo('setting')" class="svg-right" />
+    <p v-show="offline" class="offlineStr">离线模式</p>
     <div class="content">
       <img
         class="bac-img"
-        :src="currentUser.avatarUrl === '' ? require('@/assets/default_man.png') : currentUser.avatarUrl"
+        :src="currentUser.avatarUrl === undefined ? require('@/assets/default_man.png') : currentUser.avatarUrl"
       />
     </div>
     <div class="info-box">
-      <van-row v-if="currentUser != null">
-        <van-col span="8">
+      <van-row>
+        <van-col span="7">
           <img
             class="headerPic"
-            :src="currentUser.avatarUrl === '' ? require('@/assets/default_man.png') : currentUser.avatarUrl"
+            :src="currentUser.avatarUrl === undefined ? require('@/assets/default_man.png') : currentUser.avatarUrl"
           />
         </van-col>
-        <van-col span="16">
+        <van-col span="17">
           <div class="p-name">姓名：{{ currentUser.name | nameStr }}</div>
           <div class="p-name">班级：{{ currentUser.title | classNameStr }}</div>
-          <div class="p-name">NO : {{ currentUser.cardNo | cardNoStr }}</div>
+          <div class="p-name">卡号：{{ currentUser.cardNo | cardNoStr }}</div>
         </van-col>
       </van-row>
     </div>
+    <offline-dialog ref="offline_dialog" />
   </div>
 </template>
 
 <script>
+import OfflineDialog from './components/offlineDialog.vue'
 export default {
   name: 'Home',
-  components: {},
+  components: { OfflineDialog },
   data() {
     return {
       Users: [],
-      currentUser: {
-        avatarUrl: ''
-      },
+      currentUser: {},
       temperture: 0
+    }
+  },
+  computed: {
+    offline: function() {
+      return this.$store.getters.offline
     }
   },
   methods: {
@@ -46,11 +52,15 @@ export default {
       this.g_fetchCtx(res => {
         switch (res) {
           case 1: // 成功
-            // 上下文缓存至浏览器数据库
-            this.g_cacheCtx(this.$store.getters.commonData)
+            this.g_setOffline(false)
+            this.g_uploadCacheData()
             break
           case 2: // 失败
-            this.$startup.toast('同步失败')
+            this.g_setOffline(true)
+            this.$startup.toast('获取最新学生信息失败')
+            break
+          case 3: // 未认证
+            this.$router.push({ path: '/signIn' })
             break
         }
       })
@@ -61,43 +71,27 @@ export default {
     },
     // 初始化
     init() {
-      // 监听nfc读卡插件
-      this.$startup.readingCardNo(res => this.nfcCallBack(res))
+      this.g_creatUserDic()
+      // nfc读卡回调
+      this.g_bus.$on('nfcCallBack', res => {
+        if (res === undefined) {
+          return false
+        }
+        if (this.currentUser.cardNo !== undefined && this.currentUser.cardNo === `${this.g_binaryConversion(res)}`) {
+          this.$startup.toast('不能二次上传同一卡号数据')
+          return false
+        }
+        // 根据卡号获取学生信息
+        this.currentUser = this.$getUser(res)
+        // 上传检查
+        if (this.currentUser) {
+          this.$startup.read(this.currentUser.name)
+          this.model = this.g_creatModel(this.currentUser, this.temperture)
+          this.cacheData()
+        }
+      })
       // 测温插件监听
       this.$startup.readingTemperature(res => this.temperatureCallBack(res))
-    },
-    // 上传缓存刷卡数据 (定时任务)
-    uploadCacheData() {
-      var offline = this.g_getoffline()
-      var _this = this
-      if (!offline) {
-        this.g_idataDb
-          .find({
-            selector: { type: 'cache' },
-            limit: 1
-          })
-          .then(res => {
-            for (var i = 0; i < res.docs.length; i++) {
-              var model = res.docs[i]
-              this.postAxios('api/Temperature?SN={0}'.format(this.$startup.sn), {}, model)
-                .then(res => {
-                  console.log('测温缓存数据已上传')
-                  _this.g_idataDb.remove(model)
-                })
-                .catch(() => {
-                  console.log('测温缓存数据上传失败')
-                })
-            }
-            if (res.docs.length > 0) {
-              setTimeout(this.uploadCacheData, 1000)
-            } else {
-              setTimeout(this.uploadCacheData, 6000)
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
     },
     // 刷卡数据缓存浏览器数据库
     cacheData() {
@@ -111,26 +105,6 @@ export default {
           console.log('离线缓存刷新数据失败:{0}'.format(err))
         })
     },
-    // nfc监听函数的回调函数
-    nfcCallBack(res) {
-      if (res === undefined) {
-        return false
-      }
-      // 根据卡号获取学生信息
-      this.currentUser = this.$getUser(res)
-      // 上传检查
-      if (!this.currentUser) {
-        var cardNo_ten = this.g_binaryConversion(res)
-        this.$startup.toast('卡号【{0}】无匹配用户'.format(cardNo_ten))
-        return false
-      } else if (this.model != null && this.model.CardNo === this.currentUser.cardNo) {
-        this.$startup.toast('不能二次上传同一卡号数据')
-      } else {
-        this.$startup.read(this.currentUser.name)
-        this.model = this.g_creatModel(this.currentUser, this.temperture)
-        this.cacheData()
-      }
-    },
     // 定时清理
     clearCurrentUser() {
       setInterval(() => {
@@ -138,9 +112,7 @@ export default {
           var nowTime = new Date()
           var second = nowTime.getSeconds() - this.model.Time.getSeconds()
           if (second >= 5) {
-            this.currentUser = {
-              avatarUrl: ''
-            }
+            this.currentUser = {}
             this.temperture = 0
           }
         }
@@ -159,8 +131,12 @@ export default {
     }
   },
   mounted() {
+    this.g_bus.$off('nfcCallBack')
+    this.$startup.readingCardNo(res => {
+      this.g_bus.$emit('nfcCallBack', res)
+    })
     this.init()
-    this.uploadCacheData()
+    this.g_uploadCacheData()
     this.clearCurrentUser()
   }
 }
@@ -173,15 +149,12 @@ export default {
   height: 100vh;
   box-sizing: border-box;
   .svg-left {
+    position: absolute;
+    left: 0px;
     font-size: 30px;
-    float: left;
     margin-left: 15px;
     color: white;
-  }
-  .svg-right {
-    font-size: 30px;
-    float: right;
-    margin-right: 15px;
+    z-index: 1000;
   }
   .big-img {
     background-repeat: no-repeat;

@@ -49,7 +49,9 @@ export default {
     },
     init() {
       this.offline = this.g_getoffline()
-      this.updateTime = this.$store.getters.commonData.updateTime
+      this.g_idataDb.get('ctx').then(res => {
+        this.updateTime = res.updateTime
+      })
     }
   },
   mounted() {
@@ -69,14 +71,12 @@ export default {
           switch (res) {
             case 1: // 成功
               this.$store.dispatch('app/setOffline', val)
-              // 上下文缓存至浏览器数据库
-              this.g_cacheCtx(this.$store.getters.commonData)
-
               if (process.env.NODE_ENV === 'development') {
                 sessionStorage.setItem('offline', val)
               }
               break
             case 2: // 失败
+              this.offline = true
               this.$startup.toast('同步失败，无法转联网状态')
               break
           }
