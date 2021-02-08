@@ -26,7 +26,7 @@ var developmentStartup = {
   },
 
   // 语音提示
-  read: function(content) {
+  speak: function(content) {
     window.alert(content)
   },
 
@@ -81,7 +81,7 @@ var startup = {
   },
 
   // 语音提示
-  read: function(str) {
+  speak: function(str) {
     if (!str) {
       return
     }

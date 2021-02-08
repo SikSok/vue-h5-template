@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       registModel: {
-        TenantCode: 'cloudschools',
-        Password: '123456'
+        TenantCode: '',
+        Password: ''
       }, // 注册所需信息
       registResult: {}, // 注册设备后返回的信息
       rules: {
@@ -53,8 +53,8 @@ export default {
             this.$startup.toast('无效账户')
           }
         })
-        .catch(() => {
-          this.$startup.toast('请确认网络是否已连接')
+        .catch(res => {
+          this.$startup.toast(`登入失败，${res}`)
         })
     }
   }

@@ -93,7 +93,7 @@ export default {
         this.currentUser = this.$getUser(res)
         // 上传检查
         if (this.currentUser) {
-          this.$startup.read(this.currentUser.name)
+          this.$startup.speak(this.currentUser.nameTTS)
           this.model = this.g_creatModel(this.currentUser, this.temperture)
           this.cacheData()
         }
